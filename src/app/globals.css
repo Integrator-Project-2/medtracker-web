@@ -5,10 +5,16 @@
     --background-color: #FFF;
     --underline-color: transparent;
     --white: #ffffff;
-    --light-purple-with-opacity: rgba(153, 164, 214, 0.14);
+    --light-purple-with-opacity: rgba(153, 164, 214, 0.6);
     --light-navy: rgba(53, 77, 176, 0.14);
     --light-blue: #4D80F9;
     --card-light-color: #F5F6FB;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
