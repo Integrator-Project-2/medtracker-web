@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
+import '@radix-ui/themes/styles.css';
 import "./globals.css";
 import StyledComponentsRegistry from "../../lib/registry";
+import { Theme } from "@radix-ui/themes";
 
 const poppins = Poppins({ 
   weight: ["500","600",],
@@ -21,7 +23,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={poppins.className}>
-        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        <Theme>
+          <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        </Theme>
       </body>
     </html>
   );

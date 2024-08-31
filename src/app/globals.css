@@ -20,4 +20,13 @@
 body {
     background-color: var(--background-color);
     color: var(--dark-blue);
+    height: 100vh;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
 }
