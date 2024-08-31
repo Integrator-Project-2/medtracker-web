@@ -15,7 +15,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
 }
 
 body {
@@ -23,6 +22,7 @@ body {
     color: var(--dark-blue);
     height: 100vh;
     width: 100%;    
+    font-family: "Poppins", sans-serif;
 }
 
 main {

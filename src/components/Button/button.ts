@@ -5,6 +5,7 @@ export const Button = styled.button<StyledButtonProps>`
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 6px;
   background-color: ${({ backgroundColor }) => backgroundColor || "var(--navy)"};
   color: ${({ color }) => color || "var(--white)"};
   width: ${({ width }) => width || "auto"};
@@ -17,9 +18,5 @@ export const Button = styled.button<StyledButtonProps>`
   
   &:hover {
       opacity: 0.9;
-  }
-
-  & > img {
-    margin-right: 8px;
   }
 `;

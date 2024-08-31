@@ -16,7 +16,7 @@ export const ProfileNameText = styled.p`
     color: var(--navy);
     font-weight: 600;
     font-size: 14px;
-    `;
+`;
 
 export const ProfileSpecializationText = styled.p`
     color: var(--dark-blue);
