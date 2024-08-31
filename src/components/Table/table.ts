@@ -3,7 +3,6 @@ import { Table } from "@radix-ui/themes";
 
 export const StyledTable = styled(Table.Root)`
   width: 100%;
-  max-width: 1218px;
   border: none;
 `;
 
