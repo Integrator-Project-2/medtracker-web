@@ -6,7 +6,8 @@ import Image from 'next/image';
 
 interface ButtonProps extends StyledButtonProps {
     icon?: string;
-    children?: React.ReactNode;
+    text?: string;
+    onClick?: () => void;
 }
 
 export function Button({ 
@@ -18,7 +19,8 @@ export function Button({
     icon,
     padding,
     borderRadius,
-    children,
+    text,
+    onClick
 }: ButtonProps){
     return (
         <StyledButton
@@ -29,10 +31,11 @@ export function Button({
             fontSize={fontSize}
             padding={padding}
             borderRadius={borderRadius}
+            onClick={onClick}
         >
             {icon && <Image src={icon} alt='Ícone' width={14} height={14} />}
 
-            {children}
+            {text}
         </StyledButton>       
     )
 }

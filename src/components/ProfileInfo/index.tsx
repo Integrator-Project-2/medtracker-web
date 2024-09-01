@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { ProfileInfoContainer, ProfileNameText, ProfileSpecializationText, TextContainer } from './profile-info';
+import { UserAvatarIcon } from '../UserAvatarIcon';
 
 export function ProfileInfo() {
     return (
@@ -11,12 +12,7 @@ export function ProfileInfo() {
                 <ProfileSpecializationText>Dermathologist</ProfileSpecializationText>
             </TextContainer>
 
-            <Image 
-                src="user-avatar.svg"
-                alt="Foto de perfil do usuário"
-                width={48}
-                height={48}
-            />
+            <UserAvatarIcon />
         </ProfileInfoContainer>
     )
 }
