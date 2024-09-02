@@ -1,11 +1,11 @@
 "use client";
 
 import { Table } from "@radix-ui/themes";
-import { StyledCell, StyledColumnHeaderCell, StyledHeader, StyledRow, StyledTable } from "./table";
+import { StyledCell, StyledColumnHeaderCell, StyledHeader, StyledRow, StyledTable } from "./patients-table";
 import Image from "next/image";
 import { users } from "../../../utils/userDataMock";
 
-export function CustomTable() {
+export function PatientsTable() {
     return (
         <StyledTable>
             <StyledHeader>

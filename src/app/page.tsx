@@ -1,9 +1,7 @@
 "use client";
 
-import { Header } from "@/components/Header";
-import { CustomTable } from "@/components/Table";
+import { PatientsTable } from "@/components/PatientsTable";
 import { Title } from "@/components/Title";
-import { LayoutContainer } from "@/components/LayoutContainer";
 import { Button } from "@/components/Button";
 import { Modal } from "@/components/Modal";
 import { useState } from "react";
@@ -13,26 +11,20 @@ export default function Home() {
 
   return (
     <>
-      <Header />
-      <main>
-          <LayoutContainer>
-            <Title>
-              <Modal 
-                modalOpen={modalOpen}
-                setModalOpen={setModalOpen}   
-              />
-              <Button 
-                icon="plus-icon.svg"
-                padding="13px 20px"
-                borderRadius="8px"
-                text="New patient"
-                onClick={() => setModalOpen(!modalOpen)}
-              />
-            </Title>
-            <CustomTable />
-          </LayoutContainer>
-
-      </main>
+      <Title title="Patients">
+        <Modal 
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}   
+        />
+        <Button 
+          icon="plus-icon.svg"
+          padding="13px 20px"
+          borderRadius="8px"
+          text="New patient"
+          onClick={() => setModalOpen(!modalOpen)}
+        />
+      </Title>
+      <PatientsTable />
     </>
   );
 }

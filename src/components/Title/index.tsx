@@ -4,13 +4,14 @@ import { TitleContainer } from "./title";
 import { Title as StyledTitle } from "./title";
 
 interface TitleProps {
+    title: string;
     children: React.ReactNode
 }
 
-export function Title({ children }: TitleProps) {
+export function Title({ children, title }: TitleProps) {
     return (
         <TitleContainer>
-            <StyledTitle>Pacients</StyledTitle>
+            <StyledTitle>{title}</StyledTitle>
 
             {children}
         </TitleContainer>
