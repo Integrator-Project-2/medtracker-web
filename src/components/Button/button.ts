@@ -12,6 +12,7 @@ export const Button = styled.button<StyledButtonProps>`
   height: ${({ height }) => height || "auto"};
   padding: ${({ padding }) => padding || "auto"};
   font-size: ${({ fontSize }) => fontSize || "16px"};
+  font-family: 'Poppins', sans-serif;
   border: none;
   border-radius: ${({ borderRadius }) => borderRadius || "8px"};
   cursor: pointer;
