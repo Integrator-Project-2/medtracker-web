@@ -6,6 +6,7 @@ export const TitleContainer = styled.div`
     justify-content: space-between;
     width: 100%;
     margin-bottom: 56px;
+    margin-top: 78px;
 `;
 
 export const Title = styled.h1`
