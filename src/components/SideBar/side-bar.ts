@@ -29,7 +29,7 @@ export const TextPatientCPF = styled.p`
     font-weight: 500;
 `;
 
-export const PatientDetailSectionContainer = styled.p`
+export const PatientDetailSectionContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 25px;
