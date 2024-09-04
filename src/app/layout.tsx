@@ -29,10 +29,8 @@ export default function RootLayout({
           <StyledComponentsRegistry>
             <Header />
 
-            <main>
-              <LayoutContainer>
+            <main>              
                 {children}
-              </LayoutContainer>
             </main>
           </StyledComponentsRegistry>
         </Theme>
