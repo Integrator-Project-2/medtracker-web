@@ -2,6 +2,16 @@ import { StyledTextInputProps } from "@/@types/components/StyledTextInputProps";
 import { TextField } from "@radix-ui/themes";
 import { styled } from "styled-components";
 
+export const TextInputContainer = styled.div`
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 37px;
+    justify-content: center;
+    width: 100%;
+`;
+
 export const TextInput = styled(TextField.Root)<StyledTextInputProps>`
     width: ${({ width }) => width || '100%'};
     height: ${({ height }) => height || 'auto'};
@@ -9,3 +19,10 @@ export const TextInput = styled(TextField.Root)<StyledTextInputProps>`
     border-radius: ${({ borderRadius }) => borderRadius || '8px'};
     
 `; 
+
+export const InputLabel = styled.label`
+    font-size: 10px;
+    color: var(--dark-blue);
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+`;
