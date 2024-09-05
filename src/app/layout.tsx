@@ -4,8 +4,8 @@ import '@radix-ui/themes/styles.css';
 import "./globals.css";
 import StyledComponentsRegistry from "../../lib/registry";
 import { Theme } from "@radix-ui/themes";
-import { Header } from "@/components/Header";
-import { LayoutContainer } from "@/components/LayoutContainer";
+import { ClientLayout } from "@/components/ClientLayout";
+
 
 const poppins = Poppins({ 
   weight: ["500","600",],
@@ -22,16 +22,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
       <body className={poppins.className}>
         <Theme>
           <StyledComponentsRegistry>
-            <Header />
-
-            <main>              
-                {children}
-            </main>
+            <ClientLayout>
+              {children}
+            </ClientLayout>
           </StyledComponentsRegistry>
         </Theme>
       </body>
