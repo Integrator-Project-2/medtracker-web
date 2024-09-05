@@ -1,17 +1,24 @@
 "use client";
 
+import { StyledTitleProps } from "@/@types/components/StyledTitleProps";
 import { TitleContainer } from "./title";
 import { Title as StyledTitle } from "./title";
 
-interface TitleProps {
+interface TitleProps extends StyledTitleProps {
     title: string;
-    children: React.ReactNode
+    children?: React.ReactNode
 }
 
-export function Title({ children, title }: TitleProps) {
+export function Title({ children, title, color, margin }: TitleProps) {
     return (
-        <TitleContainer>
-            <StyledTitle>{title}</StyledTitle>
+        <TitleContainer
+            margin={margin}
+        >
+            <StyledTitle 
+                color={color}
+            >
+                {title}
+            </StyledTitle>
 
             {children}
         </TitleContainer>
