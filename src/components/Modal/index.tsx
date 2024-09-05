@@ -1,6 +1,7 @@
 import { Dialog, Flex } from "@radix-ui/themes";
-import { StyledDialogContent, StyledDialogDescription, StyledDialogTitle } from "./modal";
+import { StyledDialogContent, StyledDialogDescription, StyledDialogTitle, TitleContainer, TitleHeaderContainer } from "./modal";
 import { Button } from "../Button";
+import React from "react";
 
 interface ModalProps {
   modalOpen: boolean;
@@ -10,15 +11,22 @@ interface ModalProps {
   children: React.ReactNode;
   onSubmit: () => void;
   onCancel?: () => void;
+  button?: React.ReactNode;
 }
 
 
-export function Modal({ modalOpen, setModalOpen, title, description, children, onSubmit, onCancel }: ModalProps) {
+export function Modal({ modalOpen, setModalOpen, title, description, children, button, onSubmit, onCancel }: ModalProps) {
   return (
     <Dialog.Root open={modalOpen}>
       <StyledDialogContent>
-        <StyledDialogTitle>{title}</StyledDialogTitle>
-        <StyledDialogDescription size="2">{description}</StyledDialogDescription>
+        <TitleHeaderContainer>
+          <TitleContainer>
+            <StyledDialogTitle>{title}</StyledDialogTitle>
+            <StyledDialogDescription size="2">{description}</StyledDialogDescription>
+          </TitleContainer>
+          {button}
+        </TitleHeaderContainer>
+
 
         <Flex direction="column" gap="3">
           {children}

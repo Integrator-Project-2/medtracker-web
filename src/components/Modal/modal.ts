@@ -9,11 +9,23 @@ export const StyledDialogContent = styled(Dialog.Content)`
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 `;
 
+export const TitleHeaderContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+`;
+
 export const StyledDialogTitle = styled(Dialog.Title)`
     color: var(--dark-blue);
     font-size: 22px;
-    margin-bottom: 17px;
-    `;
+`;
 
 export const StyledDialogDescription = styled(Dialog.Description)`
     font-size: 12px;
