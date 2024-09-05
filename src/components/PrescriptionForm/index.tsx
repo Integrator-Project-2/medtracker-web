@@ -4,17 +4,14 @@ import { MedicationInfo } from "../MedicationInfo";
 import { Button } from "../Button";
 import { TextArea } from "../TextArea/text-area";
 import { useState } from "react";
-import { Modal } from "../Modal";
-import { Flex } from "@radix-ui/themes";
-import { TextInput } from "../TextInput";
-import { MedicationCard } from "../MedicationCard";
+import { SearchMedicationModal } from "../SearchMedicationModal";
 
 interface PrescriptionFormProps extends StyledPrescriptionText {
     
 }
 
 export function PrescriptionForm({ display, alignItems, justifyContent }: PrescriptionFormProps) {
-    const [modalOpen, setModalOpen] = useState(false);
+    const [searchMedicationModalOpen, setSearchMedicationModalOpen] = useState(false);
 
     return (
         <PrescriptionFormContainer>
@@ -42,7 +39,7 @@ export function PrescriptionForm({ display, alignItems, justifyContent }: Prescr
                     borderRadius="6px"
                     text="Add Medication"
                     padding="11px 15px"
-                    onClick={() => setModalOpen(!modalOpen)}
+                    onClick={() => setSearchMedicationModalOpen(!searchMedicationModalOpen)}
                 />
             </PrescriptionText>
 
@@ -74,46 +71,11 @@ export function PrescriptionForm({ display, alignItems, justifyContent }: Prescr
                     padding="14px 36px"
                 />
             </PrescriptionFooterContainer>
-            <Modal 
-                modalOpen={modalOpen}
-                setModalOpen={setModalOpen}
-                title="Medications"
-                description="Search or create a medication"
-                button={
-                    <Button 
-                        icon="plus-icon-blue.svg"
-                        color="var(--light-blue)"
-                        backgroundColor="var(--light-navy)"
-                        padding="12px"
-                        text="New Medication"
-                        fontSize="9px"
-                    />}
-                onSubmit={() => console.log("Submit clicked")}
-                onCancel={() => setModalOpen(false)}
-            >
-                <Flex direction="row" gap="3">
-                    <TextInput 
-                        width="100%"
-                        placeholder="ex.:dipirona"
-                        // value={cpf}
-                        // onChange={(e) => setCpf(e.target.value)}
-                    />
-                <Button 
-                    icon="search-icon.svg"
-                    color="var(--navy)"
-                    backgroundColor="var(--light-navy)"
-                    padding="10px"
-                    // onClick={handleSearch}
-                />
-                </Flex>
 
-                <Flex direction="column">
-                    <MedicationCard
-                        medicationName="Dipirona 500mg"
-                        pharmaceuticalForm="Tablet"
-                    />
-                </Flex>
-            </Modal>
+            <SearchMedicationModal 
+                modalOpen={searchMedicationModalOpen}
+                setModalOpen={setSearchMedicationModalOpen}
+            />
         </PrescriptionFormContainer>       
     )
 }
