@@ -85,7 +85,7 @@ export function SignUpForm() {
             )}
 
             <Text>
-                Already have an account?
+                Already have an account?{" "}
                 <Link href="/login">
                     Sign In
                 </Link>

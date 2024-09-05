@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function Login() {
     return (
-        <LayoutContainer flexDirection="row">
+        <LayoutContainer flexDirection="row" maxWidth="None">
             <LayoutContainer
                 backgroundColor="var(--white-secondary)"
                 flex={1}

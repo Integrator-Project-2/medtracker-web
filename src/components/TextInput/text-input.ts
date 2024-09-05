@@ -10,6 +10,7 @@ export const TextInputContainer = styled.div`
     margin-bottom: 37px;
     justify-content: center;
     width: 100%;
+    font-family: 'Poppins', sans-serif;
 `;
 
 export const TextInput = styled(TextField.Root)<StyledTextInputProps>`
@@ -17,7 +18,8 @@ export const TextInput = styled(TextField.Root)<StyledTextInputProps>`
     height: ${({ height }) => height || 'auto'};
     padding: ${({ padding }) => padding || '8px'};
     border-radius: ${({ borderRadius }) => borderRadius || '8px'};
-    
+    border: 1px solid var(--light-purple);
+    color: var(--light-purple);
 `; 
 
 export const InputLabel = styled.label`

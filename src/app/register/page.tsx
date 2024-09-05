@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function Register() {
     return (
-        <LayoutContainer flexDirection="row">
+        <LayoutContainer flexDirection="row" maxWidth="None">
             <LayoutContainer
                 backgroundColor="var(--white-secondary)"
                 flex={1}
