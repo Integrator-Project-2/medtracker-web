@@ -1,8 +1,5 @@
 import { Modal } from "../Modal";
-import { Flex } from "@radix-ui/themes";
 import { TextInput } from "../TextInput";
-import { Button } from "../Button";
-import { InputLabel, TextInputContainer } from "../SearchMedicationModal/search-medication-modal";
 
 interface CreateMedicationModalProps {
     modalOpen: boolean;
@@ -23,16 +20,16 @@ export function CreateMedicationModal({ modalOpen, setModalOpen }: CreateMedicat
             }}
             onCancel={() => setModalOpen(false)}
         >
+            
+            <TextInput 
+                label="Name"
+                placeholder="Ex: Dipirona"
+            />
 
-            <TextInputContainer>
-                <InputLabel>Name</InputLabel>
-                <TextInput placeholder="Ex: Dipirona" />
-            </TextInputContainer>
-
-            <TextInputContainer>
-                <InputLabel>Pharmaceutical Form</InputLabel>
-                <TextInput placeholder="Ex: Tablet" />
-            </TextInputContainer>
+            <TextInput 
+                label="Pharmaceutical Form"
+                placeholder="Ex: Tablet"
+            />
         </Modal>
     );
 }
