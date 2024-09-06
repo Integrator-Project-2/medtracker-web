@@ -6,4 +6,5 @@ export interface StyledButtonProps {
     fontSize?: string;
     padding?: string;
     borderRadius?: string;
+    disabled?: boolean;
 }

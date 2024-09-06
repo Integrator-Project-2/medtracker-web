@@ -9,13 +9,24 @@ interface ModalProps {
   title: string;
   description: string;
   children: React.ReactNode;
+  footer: React.ReactNode;
   onSubmit: () => void;
   onCancel?: () => void;
   button?: React.ReactNode;
 }
 
 
-export function Modal({ modalOpen, setModalOpen, title, description, children, button, onSubmit, onCancel }: ModalProps) {
+export function Modal({ 
+  modalOpen, 
+  setModalOpen, 
+  title, 
+  description, 
+  children, 
+  button,
+  footer,
+  onSubmit,
+  onCancel 
+}: ModalProps) {
   return (
     <Dialog.Root open={modalOpen}>
       <StyledDialogContent>
@@ -32,21 +43,7 @@ export function Modal({ modalOpen, setModalOpen, title, description, children, b
           {children}
         </Flex>
 
-        <Flex gap="3" mt="4" justify="end">
-          <Button 
-            text="Cancel"
-            padding="14px 41px"
-            backgroundColor="var(--light-navy)"
-            color="var(--navy)"
-            onClick={onCancel || (() => setModalOpen(false))} 
-          />
-
-          <Button 
-            text="Done"
-            padding="14px 41px"
-            onClick={onSubmit} 
-          />
-        </Flex>
+        {footer}
       </StyledDialogContent>
     </Dialog.Root>
   );

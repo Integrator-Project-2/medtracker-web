@@ -8,6 +8,7 @@ interface ButtonProps extends StyledButtonProps {
     icon?: string;
     text?: string;
     onClick?: () => void;
+    type?: 'button' | 'submit' | 'reset';
 }
 
 export function Button({ 
@@ -20,6 +21,8 @@ export function Button({
     padding,
     borderRadius,
     text,
+    type = 'button',
+    disabled = false, 
     onClick
 }: ButtonProps){
     return (
@@ -32,6 +35,8 @@ export function Button({
             padding={padding}
             borderRadius={borderRadius}
             onClick={onClick}
+            type={type}
+            disabled={disabled}
         >
             {icon && <Image src={icon} alt='Ícone' width={14} height={14} />}
 

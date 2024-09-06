@@ -3,9 +3,10 @@ import { Button } from "../Button";
 import { Modal } from "../Modal";
 import { TextInput } from "../TextInput";
 import { UserCard } from "../UserCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { searchByCpf } from "@/services/users-service/searchByCpf";
 import { Patient } from "@/@types/Data/Patient";
+import { associateDoctorPatient } from "@/services/patients-managment/associateDoctorPatient";
 
 interface SearchPatientModalProps {
     modalOpen: boolean;
@@ -15,14 +16,32 @@ interface SearchPatientModalProps {
 export function SearchPatientModal({ modalOpen, setModalOpen }: SearchPatientModalProps) {
     const [cpf, setCpf] = useState('');
     const [patientData, setPatientData] = useState<Patient>({} as Patient);
+    const [selectedValue, setSelectedValue] = useState<string>("");
 
     const handleSearch = async () => {
         try {
           const data = await searchByCpf({ cpf });
-          console.log(`paciente retornado: ${data}`);
-          setPatientData(data); 
+          setPatientData(data);
         } catch (err) {
           setPatientData({} as Patient); 
+        }
+    };
+
+    const handleSubmit = async () => {
+        if (selectedValue) {
+            const payload = {
+                doctor_id: 34, // ID do médico fixo
+                patient_id: Number(selectedValue),
+            };
+
+            try {
+                const response = await associateDoctorPatient(payload);
+                console.log('Associação realizada:', response);
+            } catch (error) {
+                console.error('Erro ao associar médico e paciente:', error);
+            } finally {
+                setModalOpen(false);
+            }
         }
     };
     
@@ -32,8 +51,27 @@ export function SearchPatientModal({ modalOpen, setModalOpen }: SearchPatientMod
             setModalOpen={setModalOpen}
             title="Vinculate new Patient"
             description="Enter a valid CPF number to search for a new patient"
-            onSubmit={() => console.log("Submit clicked")}
+            onSubmit={handleSubmit}
             onCancel={() => setModalOpen(false)}
+            footer={
+                <Flex gap="3" mt="4" justify="end">
+                    <Button 
+                        text="Cancel"
+                        padding="14px 41px"
+                        backgroundColor="var(--light-navy)"
+                        color="var(--navy)"
+                        onClick={() => setModalOpen(false)} 
+                    />
+
+                    <Button 
+                        text="Done"
+                        padding="14px 41px"
+                        type="submit" 
+                        disabled={selectedValue === ""}
+                        onClick={handleSubmit}
+                    />
+                </Flex>
+            }
         >
             <Flex direction="row" gap="3">
                 <TextInput 
@@ -54,12 +92,16 @@ export function SearchPatientModal({ modalOpen, setModalOpen }: SearchPatientMod
 
             <Flex direction="column">
                 {patientData && patientData.id ? (  
-                    <UserCard patient={patientData} />
+                    <UserCard 
+                        patient={patientData} 
+                        selectedValue={selectedValue.toString()}
+                        setSelectedValue={setSelectedValue}    
+                    />
                 ) : (
                     <p>No patient found.</p> 
                 )}
             </Flex>
-      </Modal>
+        </Modal>
     );
 }
 
