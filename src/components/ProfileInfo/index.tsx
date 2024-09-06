@@ -1,18 +1,27 @@
 "use client";
 
-import Image from 'next/image';
 import { ProfileInfoContainer, ProfileNameText, ProfileSpecializationText, TextContainer } from './profile-info';
-import { UserAvatarIcon } from '../UserAvatarIcon';
+import { AvatarCircle } from '../AvatarCircle';
 
-export function ProfileInfo() {
+interface ProfileInfoProps {
+    name: string;
+    specialization: string;
+}
+
+export function ProfileInfo({ name, specialization }: ProfileInfoProps) {
     return (
         <ProfileInfoContainer>
             <TextContainer>
-                <ProfileNameText>Michael Scott</ProfileNameText>
-                <ProfileSpecializationText>Dermathologist</ProfileSpecializationText>
+                <ProfileNameText>{name}</ProfileNameText>
+                <ProfileSpecializationText>{specialization}</ProfileSpecializationText>
             </TextContainer>
 
-            <UserAvatarIcon />
+            <AvatarCircle 
+                name={name}
+                size={48}
+                bgColor='var(--navy)'
+                color='var(--white)'
+            />
         </ProfileInfoContainer>
     )
 }

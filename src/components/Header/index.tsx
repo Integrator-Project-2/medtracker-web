@@ -17,7 +17,7 @@ export function Header() {
                 />
             </Link>
 
-            <ProfileInfo />
+            <ProfileInfo name='Michael Scott' specialization='Dermatologist' />
         </StyledHeader>
     )
 }
