@@ -2,35 +2,40 @@ import { Card, Flex, Radio, Text } from "@radix-ui/themes";
 import { UserAvatarIcon } from "../UserAvatarIcon";
 import { CardContainer, UserCardText } from "./user-card";
 import { useState } from "react";
+import { Patient } from "@/@types/Data/Patient";
 
-export function UserCard() {
+interface UserCardProps {
+    patient: Patient;
+}
+
+export function UserCard({ patient }: UserCardProps) {
     const [selectedValue, setSelectedValue] = useState<string | null>(null);
 
-    const handleCardClick = (value: string) => {
-        setSelectedValue(value);
+    const handleCardClick = () => {
+        setSelectedValue(patient.id.toString());
     };
 
     return (
-        <CardContainer onClick={() => handleCardClick}>
+        <CardContainer onClick={handleCardClick}>
             <Flex justify="between" align="center">
                 <UserAvatarIcon />
                 <UserCardText>
-                    Teodros Girmay
+                    {patient.user.name}
                 </UserCardText>   
 
                 <UserCardText>
-                    000.000.000-00
+                    {patient.cpf}
                 </UserCardText> 
 
                 <UserCardText>
-                    09-20-1999
+                    {patient.user.birth_date} {/* Formate conforme necessário */}
                 </UserCardText>
 
                 <Radio
                     name="example"
-                    value="1"
-                    checked={selectedValue === "1"}
-                    onChange={() => setSelectedValue("1")}
+                    value={patient.id.toString()}
+                    checked={selectedValue === patient.id.toString()}
+                    onChange={() => setSelectedValue(patient.id.toString())}
                 />    
             </Flex>
         </CardContainer>
