@@ -4,6 +4,7 @@ import { Table } from "@radix-ui/themes";
 import { StyledCell, StyledColumnHeaderCell, StyledHeader, StyledRow, StyledTable } from "./patients-table";
 import Image from "next/image";
 import { users } from "../../../utils/userDataMock";
+import { PatientDetailsButton } from "../PatientDetailsButton";
 
 export function PatientsTable() {
     return (
@@ -35,12 +36,7 @@ export function PatientsTable() {
                         <StyledCell>{user.gender}</StyledCell>
                         <StyledCell>{user.birthDate}</StyledCell>
                         <StyledCell>
-                            <Image 
-                                src='fluent-apps-list-icon.svg'
-                                alt="Action icon"
-                                width={24}
-                                height={24}
-                            />
+                            <PatientDetailsButton />
                         </StyledCell>
                     </StyledRow>
                 ))}
