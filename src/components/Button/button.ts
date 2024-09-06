@@ -11,7 +11,7 @@ export const Button = styled.button<StyledButtonProps>`
   width: ${({ width }) => width || "auto"};
   height: ${({ height }) => height || "auto"};
   padding: ${({ padding }) => padding || "auto"};
-  font-size: ${({ fontSize }) => fontSize || "16px"};
+  font-size: ${({ fontSize }) => fontSize || "12px"};
   font-family: 'Poppins', sans-serif;
   border: none;
   border-radius: ${({ borderRadius }) => borderRadius || "8px"};

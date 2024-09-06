@@ -7,27 +7,28 @@ export const StyledDialogContent = styled(Dialog.Content)`
   background-color: var(--white); 
   border-radius: 8px; 
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-`;
+  `;
 
 export const TitleHeaderContainer = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-`;
+  `;
 
 export const TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 17px;
-`;
+  `;
 
 export const StyledDialogTitle = styled(Dialog.Title)`
     color: var(--dark-blue);
     font-size: 22px;
+    font-family: 'Poppins', sans-serif;
 `;
 
 export const StyledDialogDescription = styled(Dialog.Description)`
+    font-family: 'Poppins', sans-serif;
     font-size: 12px;
     color: var(--light-purple);
     margin-bottom: 22px;

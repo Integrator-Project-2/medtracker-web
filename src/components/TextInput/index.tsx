@@ -4,11 +4,12 @@ import { InputLabel, TextInput as StyledTextInput, TextInputContainer } from "./
 interface TextInputProps extends StyledTextInputProps {
     placeholder?: string;
     label?: string;
+    margin?: string;
 }
 
-export function TextInput({ placeholder, padding, width, height, label }: TextInputProps) {
+export function TextInput({ placeholder, padding, width, height, label, margin }: TextInputProps) {
     return (
-        <TextInputContainer>
+        <TextInputContainer margin={margin}>
             {label && <InputLabel>{label}</InputLabel>}
             <StyledTextInput
                 placeholder={placeholder}

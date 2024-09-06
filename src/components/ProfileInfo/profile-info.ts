@@ -4,6 +4,11 @@ export const ProfileInfoContainer = styled.div`
     display: flex;
     align-items: flex-end;
     gap: 16px;
+    font-family: 'Poppins', sans-serif;
+
+    & :hover {
+        cursor: pointer;
+    }
 `;
 
 export const TextContainer = styled.div`
