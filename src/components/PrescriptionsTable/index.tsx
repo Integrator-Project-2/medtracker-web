@@ -1,11 +1,17 @@
 "use client";
 
 import { Table } from "@radix-ui/themes";
-import { StyledCell, StyledCellContent, StyledColumnHeaderCell, StyledHeader, StyledRow, StyledTable } from "./prescriptions-table";
+import { DownloadButton, StyledCell, StyledCellContent, StyledColumnHeaderCell, StyledHeader, StyledRow, StyledTable } from "./prescriptions-table";
 import Image from "next/image";
 import { prescriptions } from "../../../utils/prescriptionsDataMock";
+import { MedicalPrescription } from "@/@types/Data/MedicalPrescription";
+import { downloadBase64File } from "../../../utils/downloadBase64File";
 
-export function PrescriptionsTable() {
+interface PrescriptionsTableProps {
+    prescriptions: MedicalPrescription[]
+}
+
+export function PrescriptionsTable({ prescriptions }: PrescriptionsTableProps) {
     return (
         <StyledTable>
             <StyledHeader>
@@ -22,24 +28,24 @@ export function PrescriptionsTable() {
                     <StyledRow key={index}>
                         <StyledCellContent>
                             <Image 
-                                src='prescription-icon.svg'
+                                src='/prescription-icon.svg'
                                 alt={`File icon`}
                                 width={28}
                                 height={28}
                             />
-                            {prescription.name}
+                            Prescription-{prescription.id}.pdf
                         </StyledCellContent>
                         <Table.RowHeaderCell>{prescription.description}</Table.RowHeaderCell>
                         <StyledCell>{prescription.date}</StyledCell>
                         <StyledCell>
-                            <a href={prescription.downloadLink} download>
+                            <DownloadButton onClick={() => downloadBase64File(prescription.prescription_pdf, 'prescription.pdf')}>
                                 <Image 
-                                    src='download-icon.svg'
+                                    src='/download-icon.svg'
                                     alt="Download icon"
                                     width={24}
                                     height={24}
                                 />
-                            </a>
+                            </DownloadButton>
                         </StyledCell>
                     </StyledRow>
                 ))}

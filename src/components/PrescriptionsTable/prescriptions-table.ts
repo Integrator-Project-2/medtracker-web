@@ -16,6 +16,15 @@ export const StyledCell = styled(Table.Cell)`
   padding: 8px 16px;
 `;
 
+export const DownloadButton = styled.a`
+  width: 100%;
+  height: 100%;
+
+  & :hover {
+    cursor: pointer;
+  }
+`;
+
 export const StyledCellContent = styled(Table.Cell)`
   display: flex;
   align-items: center;
