@@ -1,5 +1,6 @@
 import { StyledTextInputProps } from "@/@types/components/StyledTextInputProps";
-import { InputLabel, TextInput as StyledTextInput, TextInputContainer } from "./text-input";
+import { TextInput as StyledTextInput, TextInputContainer } from "./text-input";
+import { InputLabel } from "../InputLabel";
 
 interface TextInputProps extends StyledTextInputProps {
     placeholder?: string;
@@ -21,7 +22,7 @@ export function TextInput({
 }: TextInputProps) {
     return (
         <TextInputContainer margin={margin}>
-            {label && <InputLabel>{label}</InputLabel>}
+            {label && <InputLabel text={label} />}
             <StyledTextInput
                 placeholder={placeholder}
                 padding={padding}

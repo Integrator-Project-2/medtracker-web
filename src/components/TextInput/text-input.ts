@@ -19,12 +19,6 @@ export const TextInput = styled(TextField.Root)<StyledTextInputProps>`
     padding: ${({ padding }) => padding || '8px'};
     border-radius: ${({ borderRadius }) => borderRadius || '8px'};
     border: 1px solid var(--light-purple);
-    color: var(--light-purple);
+    color: var(--dark-blue);
 `; 
 
-export const InputLabel = styled.label`
-    font-size: 10px;
-    color: var(--dark-blue);
-    font-weight: 500;
-    font-family: 'Poppins', sans-serif;
-`;
