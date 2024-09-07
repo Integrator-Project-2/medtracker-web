@@ -7,18 +7,41 @@ import { TextInfo } from '../TextInfo';
 import { TextInfoContainer } from '../TextInfo/text-info';
 import { Patient } from '@/@types/Data/Patient';
 import { getGenderDescription } from '../../../utils/getGenderDescription';
+import { use, useEffect, useState } from 'react';
+import { UserInfo } from '../UserInfo';
+import { UserInfoForm } from '../UserInfoForm';
 
 interface SideBarProps {
     patient: Patient
 }
 
 export function SideBar({ patient }: SideBarProps) {
+    const [isEditing, setIsEditing] = useState(false);
+    const [currentPatient, setCurrentPatient] = useState(patient);
+
+    const handleEditClick = () => {
+        setIsEditing(true);
+    };
+
+    const handleCancel = () => {
+        setIsEditing(false);
+    };
+
+    const handleFormSubmit = (updatedPatient: Patient) => {
+        setCurrentPatient(updatedPatient);
+        setIsEditing(false);
+    };
+
+    useEffect(() => {
+        setCurrentPatient(patient);
+    }, [patient])
+    
     return (
         <SideBarContainer>
             <UserProfileContainer>
                 <UserAvatarIcon />
 
-                <EditButton>
+                <EditButton onClick={handleEditClick}>
                     <Image 
                         src='/edit-icon.svg'
                         alt='Ícone de editar informações do usuário'
@@ -28,67 +51,15 @@ export function SideBar({ patient }: SideBarProps) {
                 </EditButton>
             </UserProfileContainer>
 
-            <TextPatientName>{patient?.user?.name || 'Loading...'}</TextPatientName>
-            <TextPatientCPF>{patient.cpf}</TextPatientCPF>
-
-            <PatientDetailSectionContainer>
-                <PatientDetailSectionTitle>Contact</PatientDetailSectionTitle>
-
-                <TextInfo 
-                    label='Email'
-                    description={patient?.user?.email || 'Loading...'}
+            {isEditing ? (
+                <UserInfoForm 
+                    patient={currentPatient} 
+                    onSubmit={handleFormSubmit} 
+                    onCancel={handleCancel} 
                 />
-
-                <TextInfo 
-                    label='Phone number'
-                    description={patient?.user?.phone || 'Loading...'}
-                />
-
-                <TextInfo 
-                    label='Address'
-                    description={patient?.user?.address || 'Loading...'}
-                />
-            </PatientDetailSectionContainer>
-
-            <PatientDetailSectionContainer>
-                <PatientDetailSectionTitle>Personal</PatientDetailSectionTitle>
-
-                <TextInfoContainer
-                    flexDirection='row'
-                    gap='31px'
-                >
-                    <TextInfo 
-                        label='Date of birth'
-                        description={patient?.user?.birth_date || 'Loading...'}
-                    />
-
-                    <TextInfo 
-                        label='Gender'
-                        description={getGenderDescription(patient.gender)}
-                    />
-                </TextInfoContainer>
-
-
-                <TextInfoContainer
-                    flexDirection='row'
-                    gap='31px'
-                >
-                    <TextInfo 
-                        label='Height'
-                        description={patient.height !== null ? `${patient.height} m` : 'Not specified'}
-                    />
-
-                    <TextInfo 
-                        label='Weight'
-                        description={patient.weight !== null ? `${patient.weight} kg` : 'Not specified'}
-                    />
-                </TextInfoContainer>
-
-                <TextInfo 
-                    label='Allergies and observations'
-                    description={patient.allergies_and_observations !== null ? `${patient.allergies_and_observations}` : 'Not specified'}
-                />
-            </PatientDetailSectionContainer>
+            ) : (
+                <UserInfo patient={currentPatient} />
+            )}
 
         </SideBarContainer>
     )
