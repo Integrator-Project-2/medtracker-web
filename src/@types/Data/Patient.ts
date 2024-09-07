@@ -4,7 +4,7 @@ export interface Patient {
     id: number;
     cpf: string;
     user: User;
-    gender: string | null;
+    gender: 'M' | 'F' | 'NB' | null;
     height: number | null;
     weight: number | null;
     allergies_and_observations: string | null;

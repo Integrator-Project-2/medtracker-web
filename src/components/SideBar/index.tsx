@@ -5,8 +5,14 @@ import { UserAvatarIcon } from '../UserAvatarIcon'
 import { PatientDetailSectionContainer, PatientDetailSectionTitle, SideBarContainer, TextPatientCPF, TextPatientName, UserProfileContainer } from './side-bar'
 import { TextInfo } from '../TextInfo';
 import { TextInfoContainer } from '../TextInfo/text-info';
+import { Patient } from '@/@types/Data/Patient';
+import { getGenderDescription } from '../../../utils/getGenderDescription';
 
-export function SideBar() {
+interface SideBarProps {
+    patient: Patient
+}
+
+export function SideBar({ patient }: SideBarProps) {
     return (
         <SideBarContainer>
             <UserProfileContainer>
@@ -20,25 +26,25 @@ export function SideBar() {
                 />
             </UserProfileContainer>
 
-            <TextPatientName>Pamela Halpert</TextPatientName>
-            <TextPatientCPF>124.005.001-01</TextPatientCPF>
+            <TextPatientName>{patient?.user?.name || 'Loading...'}</TextPatientName>
+            <TextPatientCPF>{patient.cpf}</TextPatientCPF>
 
             <PatientDetailSectionContainer>
                 <PatientDetailSectionTitle>Contact</PatientDetailSectionTitle>
 
                 <TextInfo 
                     label='Email'
-                    description='pamelahalpert@email.com'
+                    description={patient?.user?.email || 'Loading...'}
                 />
 
                 <TextInfo 
                     label='Phone number'
-                    description='(00) 0000-0000'
+                    description={patient?.user?.phone || 'Loading...'}
                 />
 
                 <TextInfo 
                     label='Address'
-                    description='Street 1, New avenue, City'
+                    description={patient?.user?.address || 'Loading...'}
                 />
             </PatientDetailSectionContainer>
 
@@ -51,12 +57,12 @@ export function SideBar() {
                 >
                     <TextInfo 
                         label='Date of birth'
-                        description='09-20-2003'
+                        description={patient?.user?.birth_date || 'Loading...'}
                     />
 
                     <TextInfo 
                         label='Gender'
-                        description='Female'
+                        description={getGenderDescription(patient.gender)}
                     />
                 </TextInfoContainer>
 
@@ -67,18 +73,18 @@ export function SideBar() {
                 >
                     <TextInfo 
                         label='Height'
-                        description='165cm'
+                        description={patient.height !== null ? `${patient.height} m` : 'Not specified'}
                     />
 
                     <TextInfo 
                         label='Weight'
-                        description='60kg'
+                        description={patient.weight !== null ? `${patient.weight} kg` : 'Not specified'}
                     />
                 </TextInfoContainer>
 
                 <TextInfo 
                     label='Allergies and observations'
-                    description='Lorem ipsum dolor sit amet, consectetur adipiscing elit....'
+                    description={patient.allergies_and_observations !== null ? `${patient.allergies_and_observations}` : 'Not specified'}
                 />
             </PatientDetailSectionContainer>
 
