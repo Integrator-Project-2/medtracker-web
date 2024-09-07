@@ -6,4 +6,6 @@ export interface LayoutContainerProps {
     maxWidth?: string;
     margin?: string;
     backgroundColor?: string;
+    height?: string;
+    width?: string;
 }

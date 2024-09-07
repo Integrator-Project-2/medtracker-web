@@ -4,7 +4,9 @@ import styled from "styled-components";
 export const TextInfoContainer = styled.div<TextInfoContainerProps>`
     display: flex;
     flex-direction: ${({ flexDirection }) => flexDirection || 'column'};
-    gap: ${({ gap }) => gap || '6px'}
+    gap: ${({ gap }) => gap || '6px'};
+    align-items: ${({ alignItems }) => alignItems};
+    justify-content: ${({ justifyContent }) => justifyContent};
 `;
 
 export const Label = styled.label`

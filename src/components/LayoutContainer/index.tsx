@@ -15,7 +15,9 @@ export function LayoutContainer({
     justifyContent, 
     maxWidth, 
     margin, 
-    backgroundColor
+    backgroundColor,
+    height, 
+    width, 
 }: StyledLayoutContainerProps) {
     return (
         <StyledLayoutContainer 
@@ -26,6 +28,8 @@ export function LayoutContainer({
             justifyContent={justifyContent}
             margin={margin}
             backgroundColor={backgroundColor}
+            height={height}
+            width={width}
         >
             {children}
         </StyledLayoutContainer>

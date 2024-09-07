@@ -7,6 +7,8 @@ interface TextAreaProps {
     margin?: string;
     value?: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    width?: string;
+    height?: string;
 }
 
 export function TextArea({
@@ -14,6 +16,8 @@ export function TextArea({
     label,
     margin,
     value,
+    width,
+    height,
     onChange
 }: TextAreaProps) {
     return (
@@ -23,6 +27,8 @@ export function TextArea({
             <StyledTextArea 
                 placeholder={placeholder}
                 value={value}
+                width={width}
+                height={height}
             />
         </TextAreaContainer>
     )

@@ -6,9 +6,14 @@ interface TextInfoProps extends TextInfoContainerProps{
     description: string;
 }
 
-export function TextInfo({ label, description, flexDirection, gap }: TextInfoProps) {
+export function TextInfo({ label, description, flexDirection, gap, alignItems, justifyContent }: TextInfoProps) {
     return(
-        <TextInfoContainer flexDirection={flexDirection} gap={gap}>
+        <TextInfoContainer 
+            flexDirection={flexDirection} 
+            gap={gap} 
+            alignItems={alignItems}
+            justifyContent={justifyContent}
+        > 
             <Label>{label}</Label>
             <Description>
                 {description}
