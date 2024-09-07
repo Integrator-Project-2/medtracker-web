@@ -1,30 +1,33 @@
-import { DateInputContainer, InputLabel, StyledDateInput } from "./date-input";
+import { InputLabel } from "../InputLabel";
+import { DateInputContainer, StyledDateInput } from "./date-input";
 
 interface DateInputProps {
     label: string;
-    // value: string;
+    value: string;
     // onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     placeholder?: string;
     required?: boolean;
     padding?: string;
     width?: string;
+    margin?: string;
 }
 
 export function DateInput({
     label,
-    // value,
+    value,
     // onChange,
     placeholder = '',
     required = false,
     padding,
+    margin,
     width,
 }: DateInputProps) {
     return (
-        <DateInputContainer>
-            <InputLabel>{label}</InputLabel>
+        <DateInputContainer margin={margin}>
+            {label && <InputLabel text={label} />}
             <StyledDateInput
                 type="date"
-                // value={value}
+                value={value}
                 // onChange={onChange}
                 placeholder={placeholder}
                 required={required}
