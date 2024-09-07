@@ -1,13 +1,17 @@
-import { StyledTextInputProps } from "@/@types/components/StyledTextInputProps";
 import { TextInput as StyledTextInput, TextInputContainer } from "./text-input";
 import { InputLabel } from "../InputLabel";
+import { useController, UseControllerProps } from "react-hook-form";
+import { MedicationFormValues } from "@/@types/form-values/MedicationFormValues";
 
-interface TextInputProps extends StyledTextInputProps {
+interface TextInputProps extends UseControllerProps<MedicationFormValues>  {
     placeholder?: string;
     label?: string;
     margin?: string;
     value?: string;
-    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    padding?: string;
+    width?: string;
+    height?: string;
+    borderRadius?: string;
 }
 
 export function TextInput({ 
@@ -17,9 +21,12 @@ export function TextInput({
     height, 
     label, 
     margin, 
-    value,
-    onChange
+    control,
+    name,
+    rules,
 }: TextInputProps) {
+    const { field, fieldState } = useController({ control, name, rules });
+
     return (
         <TextInputContainer margin={margin}>
             {label && <InputLabel text={label} />}
@@ -28,9 +35,9 @@ export function TextInput({
                 padding={padding}
                 width={width}
                 height={height}
-                value={value}
-                onChange={onChange}
+                {...field}
             />  
+            {fieldState.invalid && <span>{fieldState.error?.message}</span>}
         </TextInputContainer>
     );
 }

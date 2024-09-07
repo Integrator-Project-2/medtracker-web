@@ -23,7 +23,8 @@ export const TextInput = styled.input<StyledTextInputProps>`
     font-size: 12px;
 
     & :focus {
-        border: 1px solid var(--light-blue);
+        border: 2px solid var(--light-blue);
+        outline: none;
     }
 `; 
 
