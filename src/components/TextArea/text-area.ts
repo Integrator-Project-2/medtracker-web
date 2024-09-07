@@ -1,3 +1,4 @@
+import { StyledTextAreaProps } from "@/@types/components/StyledTextAreaProps";
 import styled from "styled-components";
 
 export const TextAreaContainer = styled.div<{ margin?: string }>`
@@ -11,9 +12,15 @@ export const TextAreaContainer = styled.div<{ margin?: string }>`
     font-family: 'Poppins', sans-serif;
 `;
 
-export const TextArea = styled.textarea`
-    width: 563px;
-    height: 168px;
+export const TextArea = styled.textarea<StyledTextAreaProps>`
+    width: ${({ width }) => width || '563px'};
+    height: ${({ height }) => height || '168px'};
     border-radius: 12px;
-    padding: 12px;
+    padding: ${({ padding }) => padding || '8px'};
+    border-radius: ${({ borderRadius }) => borderRadius || '8px'};
+    border: 1px solid var(--light-purple);
+    color: var(--dark-blue);
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    resize: none;
 `;

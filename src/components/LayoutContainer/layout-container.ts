@@ -6,7 +6,7 @@ export const LayoutContainer = styled.div<LayoutContainerProps>`
   flex-direction: ${({ flexDirection }) => flexDirection || 'column'};
   align-items: ${({ alignItems }) => alignItems || 'center'};
   justify-content: ${({ justifyContent }) => justifyContent};
-  height: 100vh;
+  height: ${({ height }) => height || '100vh'} ;
   max-width: ${({ maxWidth }) => maxWidth ||( 1218 + 'px')} ;
   width: 100%;
   flex: ${({ flex }) => flex || 'None'};
