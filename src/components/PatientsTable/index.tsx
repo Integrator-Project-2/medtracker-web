@@ -3,10 +3,14 @@
 import { Table } from "@radix-ui/themes";
 import { StyledCell, StyledColumnHeaderCell, StyledHeader, StyledRow, StyledTable } from "./patients-table";
 import Image from "next/image";
-import { users } from "../../../utils/userDataMock";
 import { PatientDetailsButton } from "../PatientDetailsButton";
+import { Patient } from "@/@types/Data/Patient";
 
-export function PatientsTable() {
+interface PatientsTableProps {
+    patients: Patient[];
+}
+
+export function PatientsTable({ patients }: PatientsTableProps) {
     return (
         <StyledTable>
             <StyledHeader>
@@ -21,20 +25,20 @@ export function PatientsTable() {
             </StyledHeader>
 
             <Table.Body>
-                {users.map((user, index) => (
+                {patients.map((patient, index) => (
                     <StyledRow key={index}>
                         <StyledCell>
                             <Image 
                                 src='user-icon-avatar.svg'
-                                alt={`Avatar of ${user.name}`}
+                                alt={`Avatar of ${patient.user.name}`}
                                 width={28}
                                 height={28}
                             />
                         </StyledCell>
-                        <Table.RowHeaderCell>{user.name}</Table.RowHeaderCell>
-                        <StyledCell>{user.cpf}</StyledCell>
-                        <StyledCell>{user.gender}</StyledCell>
-                        <StyledCell>{user.birthDate}</StyledCell>
+                        <Table.RowHeaderCell>{patient.user.name}</Table.RowHeaderCell>
+                        <StyledCell>{patient.cpf}</StyledCell>
+                        <StyledCell>{patient.gender}</StyledCell>
+                        <StyledCell>{patient.user.birth_date}</StyledCell>
                         <StyledCell>
                             <PatientDetailsButton />
                         </StyledCell>

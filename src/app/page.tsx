@@ -3,12 +3,30 @@
 import { PatientsTable } from "@/components/PatientsTable";
 import { Title } from "@/components/Title";
 import { Button } from "@/components/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LayoutContainer } from "@/components/LayoutContainer";
 import { SearchPatientModal } from "@/components/SearchPatientModal";
+import { getDoctorPatients } from "@/services/patients-managment/getDoctorPatients";
+import { Patient } from "@/@types/Data/Patient";
 
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
+  const [patients, setPatients] = useState<Patient[]>([]);
+  const doctorId = 34;
+
+  useEffect(() => {
+    const fetchPatients = async () => {
+      try {
+        const patientsData = await getDoctorPatients(doctorId);
+        console.log("pacientes do médico: ", patients);
+        setPatients(patientsData);
+      } catch (error) {
+        console.error('Failed to fetch patients', error);
+      }
+    };
+
+    fetchPatients();
+  }, [doctorId]);
 
   return (
     <LayoutContainer>
@@ -25,7 +43,7 @@ export default function Home() {
           onClick={() => setModalOpen(!modalOpen)}
         />
         </Title>
-      <PatientsTable />
+      <PatientsTable patients={patients} />
     </LayoutContainer>
   );
 }
