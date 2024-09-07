@@ -13,7 +13,7 @@ export function SideBar() {
                 <UserAvatarIcon />
 
                 <Image 
-                    src='edit-icon.svg'
+                    src='/edit-icon.svg'
                     alt='Ícone de editar informações do usuário'
                     width={24}
                     height={24}

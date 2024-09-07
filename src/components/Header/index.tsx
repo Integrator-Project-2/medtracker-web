@@ -10,7 +10,7 @@ export function Header() {
         <StyledHeader>
             <Link href="/">
                 <Image 
-                    src="logo.svg"
+                    src="/logo.svg"
                     alt="Logo Medtracker"
                     width={211}
                     height={30}
