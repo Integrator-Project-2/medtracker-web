@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { UserAvatarIcon } from '../UserAvatarIcon'
-import { PatientDetailSectionContainer, PatientDetailSectionTitle, SideBarContainer, TextPatientCPF, TextPatientName, UserProfileContainer } from './side-bar'
+import { EditButton, PatientDetailSectionContainer, PatientDetailSectionTitle, SideBarContainer, TextPatientCPF, TextPatientName, UserProfileContainer } from './side-bar'
 import { TextInfo } from '../TextInfo';
 import { TextInfoContainer } from '../TextInfo/text-info';
 import { Patient } from '@/@types/Data/Patient';
@@ -18,12 +18,14 @@ export function SideBar({ patient }: SideBarProps) {
             <UserProfileContainer>
                 <UserAvatarIcon />
 
-                <Image 
-                    src='/edit-icon.svg'
-                    alt='Ícone de editar informações do usuário'
-                    width={24}
-                    height={24}
-                />
+                <EditButton>
+                    <Image 
+                        src='/edit-icon.svg'
+                        alt='Ícone de editar informações do usuário'
+                        width={24}
+                        height={24}
+                    />
+                </EditButton>
             </UserProfileContainer>
 
             <TextPatientName>{patient?.user?.name || 'Loading...'}</TextPatientName>
