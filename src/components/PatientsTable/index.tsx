@@ -40,7 +40,7 @@ export function PatientsTable({ patients }: PatientsTableProps) {
                         <StyledCell>{patient.gender}</StyledCell>
                         <StyledCell>{patient.user.birth_date}</StyledCell>
                         <StyledCell>
-                            <PatientDetailsButton />
+                            <PatientDetailsButton patientId={patient.id} />
                         </StyledCell>
                     </StyledRow>
                 ))}

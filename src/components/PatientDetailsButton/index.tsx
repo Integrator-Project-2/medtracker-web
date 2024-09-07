@@ -2,11 +2,15 @@ import Image from "next/image";
 import { Button } from "./patient-details-button";
 import { useRouter } from "next/navigation";
 
-export function PatientDetailsButton() {
+interface PatientDetailsButtonProps {
+    patientId: number;
+}
+
+export function PatientDetailsButton({ patientId }: PatientDetailsButtonProps) {
     const router = useRouter();
 
     const handleClick = () => {
-      router.push('/patient-details');
+        router.push(`/patient-details/${patientId}`);
     };
 
     return (
