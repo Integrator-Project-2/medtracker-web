@@ -1,4 +1,4 @@
 export interface MedicationFormValues {
     name: string;
-    pharmaceuticalForm: string;
+    pharmaceutical_form: string;
 }

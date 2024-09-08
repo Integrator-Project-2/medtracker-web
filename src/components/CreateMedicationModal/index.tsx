@@ -4,7 +4,6 @@ import { TextInput } from "../TextInput";
 import { Button } from "../Button";
 import { useForm } from "react-hook-form";
 import { MedicationFormValues } from "@/@types/form-values/MedicationFormValues";
-import { Medication } from "@/@types/Data/Medication";
 import { createMedication } from "@/services/medication-service/createMedication";
 
 interface CreateMedicationModalProps {
@@ -16,15 +15,15 @@ export function CreateMedicationModal({ modalOpen, setModalOpen }: CreateMedicat
     const { register, handleSubmit, reset, control } = useForm<MedicationFormValues>({
         defaultValues: {
             name: '',
-            pharmaceuticalForm: ''
+            pharmaceutical_form: ''
         },
         mode: "onChange"
     });
 
     const onSubmit = async  (data: MedicationFormValues) => {
-        const medication: Medication = {
+        const medication: MedicationFormValues = {
             name: data.name,
-            pharmaceutical_form: data.pharmaceuticalForm as 'tablet' | 'capsule' | 'solution' | 'liquid' | 'drops' | 'injectable',
+            pharmaceutical_form: data.pharmaceutical_form as 'tablet' | 'capsule' | 'solution' | 'liquid' | 'drops' | 'injectable',
         };
 
         try {
@@ -90,8 +89,8 @@ export function CreateMedicationModal({ modalOpen, setModalOpen }: CreateMedicat
                     margin="0 0 17px"
                     padding="10px 15px"
                     control={control}
-                    {...register("pharmaceuticalForm", { required: "Pharmaceutical Form is required" })}
-                    name="pharmaceuticalForm"
+                    {...register("pharmaceutical_form", { required: "Pharmaceutical Form is required" })}
+                    name="pharmaceutical_form"
                 />
             </form>
             

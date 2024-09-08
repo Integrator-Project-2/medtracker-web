@@ -1,7 +1,7 @@
-import { Medication } from '@/@types/Data/Medication';
 import api from '../api';
+import { MedicationFormValues } from '@/@types/form-values/MedicationFormValues';
 
-export const createMedication = async (data: Medication) => {
+export const createMedication = async (data: MedicationFormValues) => {
   try {
     const response = await api.post('/medications/', data);
     return response.data;
