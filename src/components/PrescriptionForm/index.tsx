@@ -34,7 +34,7 @@ export function PrescriptionForm({ display, alignItems, justifyContent }: Prescr
                 <Button 
                     backgroundColor="var(--light-navy)" 
                     fontSize="10px"
-                    icon="plus-icon-blue.svg"
+                    icon="/plus-icon-blue.svg"
                     color="var(--light-blue)"
                     borderRadius="6px"
                     text="Add Medication"

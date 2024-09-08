@@ -20,7 +20,7 @@ export function MedicationInfo({ medicationName, pharmaceuticalForm }: Medicatio
             </MedicationInfoTextContainer>
             
             <Image 
-                src="x-icon.svg"
+                src="/x-icon.svg"
                 alt="Close icon"
                 width={16}
                 height={16}

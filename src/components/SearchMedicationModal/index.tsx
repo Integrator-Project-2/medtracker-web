@@ -13,6 +13,16 @@ interface SearchMedicationModalProps {
 
 export function SearchMedicationModal({ modalOpen, setModalOpen }: SearchMedicationModalProps) {
     const [createMedicationModalOpen, setCreateMedicationModalOpen] = useState(false);
+    const [selectedValue, setSelectedValue] = useState<string>("");
+
+    const handleSubmit = async () => {
+        if (selectedValue) {
+            const payload = {
+                doctor_id: 34, // ID do médico fixo
+                patient_id: Number(selectedValue),
+            };
+        }
+    };
     
     return (
         <>
@@ -23,7 +33,7 @@ export function SearchMedicationModal({ modalOpen, setModalOpen }: SearchMedicat
                 description="Search or create a medication"
                 button={
                     <Button 
-                        icon="plus-icon-blue.svg"
+                        icon="/plus-icon-blue.svg"
                         color="var(--light-blue)"
                         backgroundColor="var(--light-navy)"
                         padding="12px"
@@ -34,16 +44,35 @@ export function SearchMedicationModal({ modalOpen, setModalOpen }: SearchMedicat
                             setCreateMedicationModalOpen(!createMedicationModalOpen) // abre modal de criação de medicamento
                         }}
                     />}
+                footer={
+                    <Flex gap="3" mt="4" justify="end">
+                        <Button 
+                            text="Cancel"
+                            padding="14px 41px"
+                            backgroundColor="var(--light-navy)"
+                            color="var(--navy)"
+                            onClick={() => setModalOpen(false)} 
+                        />
+    
+                        <Button 
+                            text="Done"
+                            padding="14px 41px"
+                            type="submit" 
+                            disabled={selectedValue === ""}
+                            onClick={handleSubmit}
+                        />
+                    </Flex>
+                }
                 onSubmit={() => console.log("Submit clicked")}
                 onCancel={() => setModalOpen(false)}
             >
                 <Flex direction="row" gap="3">
-                    <TextInput 
+                    {/* <TextInput 
                         width="100%"
                         placeholder="ex.:dipirona"
                         // value={cpf}
                         // onChange={(e) => setCpf(e.target.value)}
-                    />
+                    /> */}
 
                     <Button 
                         icon="search-icon.svg"

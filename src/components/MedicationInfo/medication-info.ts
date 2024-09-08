@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const MedicationInfoContainer = styled.div`
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin: 0 0 0 14px;
     width: 100%;
 `;
