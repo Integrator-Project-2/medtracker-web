@@ -1,9 +1,8 @@
 import { TextInput as StyledTextInput, TextInputContainer } from "./text-input";
 import { InputLabel } from "../InputLabel";
-import { useController, UseControllerProps } from "react-hook-form";
-import { MedicationFormValues } from "@/@types/form-values/MedicationFormValues";
+import { FieldValues, useController, UseControllerProps } from "react-hook-form";
 
-interface TextInputProps extends UseControllerProps<MedicationFormValues>  {
+interface TextInputProps<T extends FieldValues> extends UseControllerProps<T>  {
     placeholder?: string;
     label?: string;
     margin?: string;
@@ -14,7 +13,7 @@ interface TextInputProps extends UseControllerProps<MedicationFormValues>  {
     borderRadius?: string;
 }
 
-export function TextInput({ 
+export function TextInput<T extends FieldValues>({ 
     placeholder, 
     padding, 
     width, 
@@ -24,8 +23,8 @@ export function TextInput({
     control,
     name,
     rules,
-}: TextInputProps) {
-    const { field, fieldState } = useController({ control, name, rules });
+}: TextInputProps<T>) {
+    const { field, fieldState } = useController<T>({ control, name, rules });
 
     return (
         <TextInputContainer margin={margin}>

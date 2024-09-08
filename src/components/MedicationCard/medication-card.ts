@@ -7,7 +7,7 @@ export const CardContainer = styled.div`
     padding: 15px 20px;
     display: flex;
     align-items: center;
-    margin-top: 36px;
+    margin-top: 24px;
 `;
 
 export const MedicationName = styled.p`

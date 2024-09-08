@@ -5,6 +5,10 @@ import { Modal } from "../Modal";
 import { Button } from "../Button";
 import { CreateMedicationModal } from "../CreateMedicationModal";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { SearchMedicationFormValues } from "@/@types/form-values/SearchMedicationFormValues";
+import { searchMedicationByName } from "@/services/medication-service/searchMedicationByName";
+import { Medication } from "@/@types/Data/Medication";
 
 interface SearchMedicationModalProps {
     modalOpen: boolean;
@@ -14,13 +18,35 @@ interface SearchMedicationModalProps {
 export function SearchMedicationModal({ modalOpen, setModalOpen }: SearchMedicationModalProps) {
     const [createMedicationModalOpen, setCreateMedicationModalOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<string>("");
+    const [medications, setMedications] = useState<Medication[]>([]);
 
-    const handleSubmit = async () => {
+    const { register, handleSubmit, reset, control } = useForm<SearchMedicationFormValues>({
+        defaultValues: {
+            medicationName: '',
+        },
+        mode: "onChange"
+    });
+
+    const addMedicationInPrescription = async () => {
         if (selectedValue) {
             const payload = {
                 doctor_id: 34, // ID do médico fixo
                 patient_id: Number(selectedValue),
             };
+        }
+    };
+
+    const onSubmit = async (data: SearchMedicationFormValues) => {
+        try {            
+            const medications = await searchMedicationByName(data.medicationName);
+    
+            setMedications(medications);
+
+            reset(); // Reseta os campos após a busca
+
+            console.log("Medications encontrados: ", JSON.stringify(medications));
+        } catch (error) {
+            console.error('Error searching for medication:', error);
         }
     };
     
@@ -40,8 +66,8 @@ export function SearchMedicationModal({ modalOpen, setModalOpen }: SearchMedicat
                         text="New Medication"
                         fontSize="9px"
                         onClick={() => {
-                            setModalOpen(false); // fecha o modal de buscar medicamento
-                            setCreateMedicationModalOpen(!createMedicationModalOpen) // abre modal de criação de medicamento
+                            setModalOpen(false); 
+                            setCreateMedicationModalOpen(!createMedicationModalOpen)
                         }}
                     />}
                 footer={
@@ -59,35 +85,40 @@ export function SearchMedicationModal({ modalOpen, setModalOpen }: SearchMedicat
                             padding="14px 41px"
                             type="submit" 
                             disabled={selectedValue === ""}
-                            onClick={handleSubmit}
+                            onClick={addMedicationInPrescription}
                         />
                     </Flex>
                 }
                 onSubmit={() => console.log("Submit clicked")}
                 onCancel={() => setModalOpen(false)}
             >
-                <Flex direction="row" gap="3">
-                    {/* <TextInput 
-                        width="100%"
-                        placeholder="ex.:dipirona"
-                        // value={cpf}
-                        // onChange={(e) => setCpf(e.target.value)}
-                    /> */}
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <Flex direction="row" gap="3">
+                        <TextInput 
+                            placeholder="Ex: Dipirona"
+                            margin="0"
+                            padding="10px 14px"
+                            control={control}
+                            {...register("medicationName")}
+                            width="100%"
+                        />
 
-                    <Button 
-                        icon="search-icon.svg"
-                        color="var(--navy)"
-                        backgroundColor="var(--light-navy)"
-                        padding="10px"
-                        // onClick={handleSearch}
-                    />
-                </Flex>
+                        <Button 
+                            icon="/search-icon.svg"
+                            color="var(--navy)"
+                            backgroundColor="var(--light-navy)"
+                            padding="10px"
+                            type="submit"
+                        />
+                    </Flex>
+                </form>
 
                 <Flex direction="column">
-                    <MedicationCard
-                        medicationName="Dipirona 500mg"
-                        pharmaceuticalForm="Tablet"
-                    />
+                    {medications.length > 0 && (
+                        medications.map((medication, index) => (
+                            <MedicationCard key={index} medication={medication} />
+                        ))
+                    )} 
                 </Flex>
             </Modal>
 

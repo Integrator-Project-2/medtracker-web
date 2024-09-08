@@ -1,23 +1,23 @@
 import Image from "next/image";
 import { CardContainer, MedicationName, PharmaceuticalForm } from "./medication-card";
+import { Medication } from "@/@types/Data/Medication";
+import { MedicationIcon } from "../MedicationIcon";
 
 interface MedicationCardProps {
-    medicationName: string;
-    pharmaceuticalForm: string;
+    medication: Medication;
 }
 
-export function MedicationCard({ medicationName, pharmaceuticalForm }: MedicationCardProps) {
+export function MedicationCard({ medication }: MedicationCardProps) {
     return (
         <CardContainer>
-            <Image 
-               src="tablet-medication-icon.svg"
-               alt="Ícone de medicação em tablete"
-               width={20}
-               height={20} 
+            <MedicationIcon 
+                color="var(--light-blue)"
+                size={20}
+                iconName={medication.pharmaceutical_form}
             />
 
-            <MedicationName>{medicationName}</MedicationName>
-            <PharmaceuticalForm>{pharmaceuticalForm}</PharmaceuticalForm>
+            <MedicationName>{medication.name}</MedicationName>
+            <PharmaceuticalForm>{medication.pharmaceutical_form}</PharmaceuticalForm>
         </CardContainer>
     )
 }
