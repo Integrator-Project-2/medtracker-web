@@ -3,4 +3,5 @@ export interface StyledTextAreaProps {
     width?: string;
     height?: string;
     borderRadius?: string;
+    color?: string;
 }
