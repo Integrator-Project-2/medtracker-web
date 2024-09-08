@@ -9,6 +9,9 @@ interface UserInfoProps {
 }
 
 export function UserInfo({ patient }: UserInfoProps) {
+    if (!patient) {
+        return <div>Loading...</div>; 
+    }
 
     return (
         <>

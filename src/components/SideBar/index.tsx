@@ -51,7 +51,7 @@ export function SideBar({ patient }: SideBarProps) {
                 </EditButton>
             </UserProfileContainer>
 
-            {isEditing ? (
+            {isEditing && currentPatient ?(
                 <UserInfoForm 
                     patient={currentPatient} 
                     onSubmit={handleFormSubmit} 
