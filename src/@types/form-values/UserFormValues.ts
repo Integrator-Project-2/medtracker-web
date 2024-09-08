@@ -1,8 +1,8 @@
-export interface User {
-    id?: number;
+export interface UserFormValues {
     name: string;
     email: string;
-    address: string;
+    password: string;
     phone: string;
+    address: string;
     birth_date: string;
 }

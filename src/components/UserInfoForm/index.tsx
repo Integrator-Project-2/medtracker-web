@@ -8,6 +8,8 @@ import { TextArea } from "../TextArea";
 import { Button } from "../Button";
 import { LayoutContainer } from "../LayoutContainer";
 import { useForm } from "react-hook-form";
+import { PatientFormValues } from "@/@types/form-values/PatientFormValues";
+import { updatePatientDetails } from "@/services/users-service/updatePatient";
 
 interface UserInfoFormProps {
     patient: Patient;
@@ -17,18 +19,67 @@ interface UserInfoFormProps {
 
 
 export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps) {
-    const { register, handleSubmit, formState: { errors }, reset } = useForm<Patient>({
-        defaultValues: patient,
+    const { register, handleSubmit, reset, control } = useForm<PatientFormValues>({
+        defaultValues: {
+            cpf: patient.cpf || '',
+            user: {
+                name: patient.user.name || '',
+                email: patient.user.email || '',
+                phone: patient.user.phone || '',
+                address: patient.user.address || '',
+                birth_date: patient.user.birth_date || ''
+            },
+            gender: patient.gender || null,
+            height: patient.height || null,
+            weight: patient.weight || null,
+            allergies_and_observations: patient.allergies_and_observations || null
+        },
     });
 
-    const onSubmitForm = (data: Patient) => {
-        console.log('uhuuuul: ' + JSON.stringify(data));
-        onSubmit(data);
+    const onSubmitForm = async (data: Patient) => {
+        try {
+            if (patient.id) {
+
+                const updatedData: Partial<Patient> = {
+                    cpf: data.cpf,
+                    gender: data.gender,
+                    height: data.height,
+                    weight: data.weight,
+                    allergies_and_observations: data.allergies_and_observations,
+                };
+    
+                // Check if the email has changed
+                if (data.user.email !== patient.user.email) {
+                    updatedData.user = {
+                        ...data.user,
+                    };
+                }
+
+                const updatedPatient = await updatePatientDetails(patient.id, updatedData);
+                console.log('Patient updated successfully:', updatedPatient);
+                onSubmit(updatedPatient);   
+            }
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     useEffect(() => {
-        reset(patient);
-    }, [reset]);
+        reset({
+            cpf: patient.cpf || '',
+            user: {
+                name: patient.user.name || '',
+                email: patient.user.email || '',
+                phone: patient.user.phone || '',
+                address: patient.user.address || '',
+                birth_date: patient.user.birth_date || ''
+            },
+            gender: patient.gender || null,
+            height: patient.height || null,
+            weight: patient.weight || null,
+            allergies_and_observations: patient.allergies_and_observations || null
+        });
+    }, [patient, reset]);
 
     return (
         <form onSubmit={handleSubmit((data) => {
@@ -39,16 +90,16 @@ export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps)
                 {...register("user.name", { required: true })}
                 placeholder="Pacient name"
                 margin="0"
+                control={control}
             />
-            {errors.user?.name && <span>This field is required</span>}
 
             <TextInput
                 label="CPF"
                 {...register("cpf", { required: true })}
                 placeholder="CPF"
                 margin="0"
+                control={control}
             />
-            {errors.cpf && <span>This field is required</span>}
 
             <PatientDetailSectionContainer>
                 <PatientDetailSectionTitle>Contact</PatientDetailSectionTitle>
@@ -58,14 +109,15 @@ export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps)
                     {...register("user.email", { required: true })}
                     placeholder="Email"
                     margin="0"
+                    control={control}
                 />
-                {errors.user?.email && <span>This field is required</span>}
 
                 <TextInput
                     label="Phone number"
                     {...register("user.phone")}
                     placeholder="Phone number"
                     margin="0"
+                    control={control}
                 />
 
                 <TextInput
@@ -73,6 +125,7 @@ export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps)
                     {...register("user.address")}
                     placeholder="Address"
                     margin="0"
+                    control={control}
                 />
             </PatientDetailSectionContainer>
 
@@ -90,6 +143,7 @@ export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps)
                         placeholder="Date of birth"
                         margin="0"
                         width="120px"
+                        control={control}
                     />
 
                     <TextInput
@@ -98,6 +152,7 @@ export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps)
                         placeholder="Gender"
                         margin="0"
                         width="120px"
+                        control={control}
                     />
                 </TextInfoContainer>
 
@@ -108,6 +163,7 @@ export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps)
                         placeholder="Height (m)"
                         margin="0"
                         width="120px"
+                        control={control}
                     />
 
                     <TextInput
@@ -116,6 +172,7 @@ export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps)
                         placeholder="Weight (kg)"
                         margin="0"
                         width="120px"
+                        control={control}
                     />
                 </TextInfoContainer>
 
@@ -126,6 +183,7 @@ export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps)
                     margin="0"
                     width="100%"
                     height="83px"
+                    control={control}
                 />
             </PatientDetailSectionContainer>
 
