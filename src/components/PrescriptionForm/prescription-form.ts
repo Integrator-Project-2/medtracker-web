@@ -31,10 +31,11 @@ export const PrescriptionText = styled.p<StyledPrescriptionText>`
     width: 100%;
 `; 
 
-export const PrescriptionInfo = styled.p`
+export const PrescriptionInfo = styled.p<{ margin?: string }>`
     font-size: 12px;
     font-weight: 600;
     color: ${({ color }) => color };
+    margin: ${({ margin }) => margin };
 `;
 
 export const PrescriptionFooterContainer = styled.div`

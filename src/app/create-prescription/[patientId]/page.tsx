@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 export default function CreatePrescription() {
     const { patientId } = useParams();
     const [patient, setPatient] = useState<Patient>({} as Patient);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchPatientDetails = async () => {
@@ -22,6 +23,8 @@ export default function CreatePrescription() {
                     setPatient(data);
                 } catch (error) {
                     console.error('Failed to fetch patient details:', error);
+                } finally {
+                    setIsLoading(false); 
                 }
             }
         };
@@ -51,7 +54,11 @@ export default function CreatePrescription() {
                     margin="35px 0 27px"
                 />
 
-                <PrescriptionForm />
+                {isLoading ? (
+                    <p>Loading patient details...</p> // Mostra uma mensagem de carregamento
+                ) : (
+                    <PrescriptionForm patient={patient} />
+                )}
 
             </LayoutContainer>
 
