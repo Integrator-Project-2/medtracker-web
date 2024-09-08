@@ -9,11 +9,12 @@ import { SideBar } from "@/components/SideBar";
 import { Title } from "@/components/Title";
 import { getPatientPrescriptions } from "@/services/patients-managment/getPatientPrescriptions";
 import { getPatientDetails } from "@/services/users-service/getPatientDetails";
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
 
 export default function PatientDetails() {
     const { patientId } = useParams();
+    const router = useRouter();
 
     const [prescriptions, setPrescriptions] = useState<MedicalPrescription[]>([]);
     const [patient, setPatient] = useState<Patient>({} as Patient);
@@ -52,6 +53,10 @@ export default function PatientDetails() {
         fetchPatientDetails();
     }, [patientId]);
 
+    const handleNewPrescription = () => {
+        router.push(`/create-prescription/${patientId}`);
+    };
+
     return (
         <LayoutContainer 
             flexDirection="row" 
@@ -71,6 +76,7 @@ export default function PatientDetails() {
                         icon="/plus-icon.svg"
                         text="New prescription"
                         padding="13px 20px"
+                        onClick={handleNewPrescription}
                     />
                 </Title>
 

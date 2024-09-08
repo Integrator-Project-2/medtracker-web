@@ -1,11 +1,35 @@
 "use client";
 
+import { Patient } from "@/@types/Data/Patient";
 import { LayoutContainer } from "@/components/LayoutContainer";
 import { PrescriptionForm } from "@/components/PrescriptionForm";
 import { SideBar } from "@/components/SideBar";
 import { Title } from "@/components/Title";
+import { getPatientDetails } from "@/services/users-service/getPatientDetails";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function CreatePrescription() {
+    const { patientId } = useParams();
+    const [patient, setPatient] = useState<Patient>({} as Patient);
+
+    useEffect(() => {
+        const fetchPatientDetails = async () => {
+            if (patientId) {
+                try {
+                    const numericPatientId = Array.isArray(patientId) ? Number(patientId[0]) : Number(patientId);
+                    const data = await getPatientDetails(numericPatientId);
+                    setPatient(data);
+                } catch (error) {
+                    console.error('Failed to fetch patient details:', error);
+                }
+            }
+        };
+
+        fetchPatientDetails();
+    }, [patientId]);
+
+
     return (
         <>
         <LayoutContainer 
@@ -31,7 +55,7 @@ export default function CreatePrescription() {
 
             </LayoutContainer>
 
-            <SideBar />
+            <SideBar patient={patient} />
         </LayoutContainer>
         </>
     )
