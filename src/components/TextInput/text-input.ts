@@ -18,7 +18,7 @@ export const TextInput = styled.input<StyledTextInputProps>`
     padding: ${({ padding }) => padding || '8px'};
     border-radius: ${({ borderRadius }) => borderRadius || '8px'};
     border: 1px solid var(--light-purple);
-    color: var(--dark-blue);
+    color: ${({ color }) => color || 'var(--dark-blue)'};
     font-family: 'Poppins', sans-serif;
     font-size: 12px;
 

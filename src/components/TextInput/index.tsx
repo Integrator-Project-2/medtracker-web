@@ -11,10 +11,12 @@ interface TextInputProps<T extends FieldValues> extends UseControllerProps<T>  {
     width?: string;
     height?: string;
     borderRadius?: string;
+    color?: string;
 }
 
 export function TextInput<T extends FieldValues>({ 
-    placeholder, 
+    placeholder,
+    color, 
     padding, 
     width, 
     height, 
@@ -34,6 +36,7 @@ export function TextInput<T extends FieldValues>({
                 padding={padding}
                 width={width}
                 height={height}
+                color={color}
                 {...field}
             />  
             {fieldState.invalid && <span>{fieldState.error?.message}</span>}

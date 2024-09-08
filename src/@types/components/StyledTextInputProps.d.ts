@@ -3,4 +3,5 @@ export interface StyledTextInputProps {
     width?: string;
     height?: string;
     borderRadius?: string;
+    color?: string;
 }
