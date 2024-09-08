@@ -8,20 +8,26 @@ import { LayoutContainer } from "@/components/LayoutContainer";
 import { SearchPatientModal } from "@/components/SearchPatientModal";
 import { getDoctorPatients } from "@/services/patients-managment/getDoctorPatients";
 import { Patient } from "@/@types/Data/Patient";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
+
 
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
   const [patients, setPatients] = useState<Patient[]>([]);
+  const [loading, setLoading] = useState(true);
   const doctorId = 34;
 
   useEffect(() => {
     const fetchPatients = async () => {
+      setLoading(true);
       try {
         const patientsData = await getDoctorPatients(doctorId);
         console.log("pacientes do médico: ", patients);
         setPatients(patientsData);
       } catch (error) {
         console.error('Failed to fetch patients', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -43,7 +49,13 @@ export default function Home() {
           onClick={() => setModalOpen(!modalOpen)}
         />
         </Title>
-      <PatientsTable patients={patients} />
+        {loading ? (
+        <div style={{ height: "100%" }}>
+          <LoadingSpinner />
+        </div>
+      ) : (
+        <PatientsTable patients={patients} />
+      )}
     </LayoutContainer>
   );
 }
