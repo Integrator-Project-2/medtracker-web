@@ -3,7 +3,7 @@ import { Button } from "../Button";
 import { Modal } from "../Modal";
 import { TextInput } from "../TextInput";
 import { UserCard } from "../UserCard";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { searchByCpf } from "@/services/users-service/searchByCpf";
 import { Patient } from "@/@types/Data/Patient";
 import { associateDoctorPatient } from "@/services/patients-managment/associateDoctorPatient";

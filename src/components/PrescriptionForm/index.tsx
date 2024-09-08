@@ -5,6 +5,7 @@ import { Button } from "../Button";
 import { TextArea } from "../TextArea/text-area";
 import { useState } from "react";
 import { SearchMedicationModal } from "../SearchMedicationModal";
+import { Medication } from "@/@types/Data/Medication";
 
 interface PrescriptionFormProps extends StyledPrescriptionText {
     
@@ -12,6 +13,13 @@ interface PrescriptionFormProps extends StyledPrescriptionText {
 
 export function PrescriptionForm({ display, alignItems, justifyContent }: PrescriptionFormProps) {
     const [searchMedicationModalOpen, setSearchMedicationModalOpen] = useState(false);
+    const [medicationsInPrescription, setMedicationsInPrescription] = useState<Medication[]>([]);
+    const [medicationsInPrescriptionIds, setMedicationsInPrescriptionIds] = useState<number[]>([]);
+
+    const addMedicationToPrescription = (medication: Medication) => {
+        setMedicationsInPrescriptionIds((prevIds) => [...prevIds, medication.id]);
+        setMedicationsInPrescription((prevMeds) => [...prevMeds, medication]);
+    };
 
     return (
         <PrescriptionFormContainer>
@@ -43,8 +51,13 @@ export function PrescriptionForm({ display, alignItems, justifyContent }: Prescr
                 />
             </PrescriptionText>
 
-            <MedicationInfo medicationName="Dipirona 500mg" pharmaceuticalForm="Tablet" />
-            <MedicationInfo medicationName="Dipirona 500mg" pharmaceuticalForm="Tablet" />
+            {medicationsInPrescription.map((medication) => (
+                <MedicationInfo 
+                    key={medication.id} 
+                    medicationName={medication.name} 
+                    pharmaceuticalForm={medication.pharmaceutical_form} 
+                />
+            ))}
 
             <PrescriptionInfoContainer>
                 <PrescriptionText margin="0 0 11px 0">Description</PrescriptionText>
@@ -75,6 +88,7 @@ export function PrescriptionForm({ display, alignItems, justifyContent }: Prescr
             <SearchMedicationModal 
                 modalOpen={searchMedicationModalOpen}
                 setModalOpen={setSearchMedicationModalOpen}
+                addMedicationToPrescription={addMedicationToPrescription}
             />
         </PrescriptionFormContainer>       
     )

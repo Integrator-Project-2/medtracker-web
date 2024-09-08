@@ -13,11 +13,12 @@ import { Medication } from "@/@types/Data/Medication";
 interface SearchMedicationModalProps {
     modalOpen: boolean;
     setModalOpen: (value: boolean) => void;
+    addMedicationToPrescription: (medication: Medication) => void;
 }
 
-export function SearchMedicationModal({ modalOpen, setModalOpen }: SearchMedicationModalProps) {
+export function SearchMedicationModal({ modalOpen, setModalOpen, addMedicationToPrescription }: SearchMedicationModalProps) {
     const [createMedicationModalOpen, setCreateMedicationModalOpen] = useState(false);
-    const [selectedValue, setSelectedValue] = useState<string>("");
+    const [selectedMedication, setSelectedMedication] = useState<Medication | null>(null);
     const [medications, setMedications] = useState<Medication[]>([]);
 
     const { register, handleSubmit, reset, control } = useForm<SearchMedicationFormValues>({
@@ -27,12 +28,10 @@ export function SearchMedicationModal({ modalOpen, setModalOpen }: SearchMedicat
         mode: "onChange"
     });
 
-    const addMedicationInPrescription = async () => {
-        if (selectedValue) {
-            const payload = {
-                doctor_id: 34, // ID do médico fixo
-                patient_id: Number(selectedValue),
-            };
+    const addMedicationInPrescription = () => {
+        if (selectedMedication) {
+            addMedicationToPrescription(selectedMedication);
+            setModalOpen(false);
         }
     };
 
@@ -84,7 +83,7 @@ export function SearchMedicationModal({ modalOpen, setModalOpen }: SearchMedicat
                             text="Done"
                             padding="14px 41px"
                             type="submit" 
-                            disabled={selectedValue === ""}
+                            disabled={!selectedMedication}
                             onClick={addMedicationInPrescription}
                         />
                     </Flex>
@@ -116,7 +115,12 @@ export function SearchMedicationModal({ modalOpen, setModalOpen }: SearchMedicat
                 <Flex direction="column">
                     {medications.length > 0 && (
                         medications.map((medication, index) => (
-                            <MedicationCard key={index} medication={medication} />
+                            <MedicationCard 
+                                key={index} 
+                                medication={medication} 
+                                selectedValue={selectedMedication?.id.toString() || ""}
+                                setSelectedValue={() => setSelectedMedication(medication)}
+                            />
                         ))
                     )} 
                 </Flex>
