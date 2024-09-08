@@ -1,6 +1,6 @@
-import { FaTablets, FaTint, FaSyringe, FaNotesMedical, FaGlassWhiskey } from 'react-icons/fa';
-import { MdOutlineMedication } from 'react-icons/md';
-import { GiWaterDrop } from 'react-icons/gi'; 
+import { FaTablets, FaTint, FaSyringe, FaNotesMedical } from 'react-icons/fa';
+import { BsCapsule } from 'react-icons/bs';
+import { FaGlassWater, FaGlassWaterDroplet } from 'react-icons/fa6';
 
 interface IconProps {
     iconName: string;
@@ -14,11 +14,11 @@ export function MedicationIcon({ iconName, color, size }: IconProps) {
             case 'tablet':
                 return <FaTablets size={size} color={color} />;
             case 'capsule':
-                return <MdOutlineMedication size={size} color={color} />;
+                return <BsCapsule size={size} color={color} />;
             case 'liquid':
-                return <FaGlassWhiskey size={size} color={color} />;
+                return <FaGlassWater size={size} color={color} />;
             case 'solution':
-                return <GiWaterDrop size={size} color={color} />;
+                return <FaGlassWaterDroplet size={size} color={color} />;
             case 'drops':
                 return <FaTint size={size} color={color} />;
             case 'injectable':
