@@ -1,5 +1,5 @@
 import { Patient } from "@/@types/Data/Patient";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TextInput } from "../TextInput";
 import { PatientDetailSectionContainer, PatientDetailSectionTitle } from "../SideBar/side-bar";
 import { TextInfoContainer } from "../TextInfo/text-info";
@@ -7,6 +7,7 @@ import { DateInput } from "../DateInput";
 import { TextArea } from "../TextArea";
 import { Button } from "../Button";
 import { LayoutContainer } from "../LayoutContainer";
+import { useForm } from "react-hook-form";
 
 interface UserInfoFormProps {
     patient: Patient;
@@ -16,75 +17,60 @@ interface UserInfoFormProps {
 
 
 export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps) {
-    const [formData, setFormData] = useState(patient);
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<Patient>({
+        defaultValues: patient,
+    });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({
-            ...formData,
-            user: {
-                ...formData.user,
-                [e.target.name]: e.target.value,
-            }
-        });
+    const onSubmitForm = (data: Patient) => {
+        console.log('uhuuuul: ' + JSON.stringify(data));
+        onSubmit(data);
     };
 
-    const handlePersonalChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
-    };
-
-    const handleSubmit = () => {
-        onSubmit(formData);
-    };
+    useEffect(() => {
+        reset(patient);
+    }, [reset]);
 
     return (
-        <>
+        <form onSubmit={handleSubmit((data) => {
+            onSubmitForm(data);
+        })}>
             <TextInput
                 label="Name"
-                // name="name"
-                value={formData.user.name}
-                onChange={handleChange}
-                placeholder="Name"
-                margin="12px 0"
+                {...register("user.name", { required: true })}
+                placeholder="Pacient name"
+                margin="0"
             />
+            {errors.user?.name && <span>This field is required</span>}
 
             <TextInput
                 label="CPF"
-                // name="cpf"
-                value={formData.cpf}
-                onChange={handlePersonalChange}
+                {...register("cpf", { required: true })}
                 placeholder="CPF"
                 margin="0"
             />
+            {errors.cpf && <span>This field is required</span>}
 
             <PatientDetailSectionContainer>
                 <PatientDetailSectionTitle>Contact</PatientDetailSectionTitle>
 
                 <TextInput
                     label="Email"
-                    // name="email"
-                    value={formData.user.email}
-                    onChange={handleChange}
+                    {...register("user.email", { required: true })}
                     placeholder="Email"
                     margin="0"
                 />
+                {errors.user?.email && <span>This field is required</span>}
 
                 <TextInput
                     label="Phone number"
-                    // name="phone"
-                    value={formData.user.phone}
-                    onChange={handleChange}
+                    {...register("user.phone")}
                     placeholder="Phone number"
                     margin="0"
                 />
 
                 <TextInput
                     label="Address"
-                    // name="address"
-                    value={formData.user.address}
-                    onChange={handleChange}
+                    {...register("user.address")}
                     placeholder="Address"
                     margin="0"
                 />
@@ -100,9 +86,7 @@ export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps)
                 >
                     <DateInput
                         label="Date of birth"
-                        // name="birth_date"
-                        value={formData.user.birth_date}
-                        // onChange={handleChange}
+                        {...register("user.birth_date")}
                         placeholder="Date of birth"
                         margin="0"
                         width="120px"
@@ -110,9 +94,7 @@ export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps)
 
                     <TextInput
                         label="Gender"
-                        // name="gender"
-                        value={formData.gender?.toString()}
-                        onChange={handlePersonalChange}
+                        {...register("gender")}
                         placeholder="Gender"
                         margin="0"
                         width="120px"
@@ -122,9 +104,7 @@ export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps)
                 <TextInfoContainer flexDirection="row" justifyContent="space-between">
                     <TextInput
                         label="Height"
-                        // name="height"
-                        value={formData.height !== null ? formData.height.toString() : ''}
-                        onChange={handlePersonalChange}
+                        {...register("height")}
                         placeholder="Height (m)"
                         margin="0"
                         width="120px"
@@ -132,9 +112,7 @@ export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps)
 
                     <TextInput
                         label="Weight"
-                        // name="weight"
-                        value={formData.weight !== null ? formData.weight.toString() : ''}
-                        onChange={handlePersonalChange}
+                        {...register("weight")}
                         placeholder="Weight (kg)"
                         margin="0"
                         width="120px"
@@ -143,9 +121,7 @@ export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps)
 
                 <TextArea
                     label="Allergies and observations"
-                    // name="allergies_and_observations"
-                    value={formData.allergies_and_observations || ''}
-                    onChange={handlePersonalChange}
+                    {...register("allergies_and_observations")}
                     placeholder="Allergies and observations"
                     margin="0"
                     width="100%"
@@ -160,17 +136,19 @@ export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps)
                 justifyContent="space-between"
                 maxWidth="100%"
             >
-                <Button 
-                    backgroundColor="var(--light-navy)" 
+                <Button
+                    backgroundColor="var(--light-navy)"
                     fontSize="10px"
                     color="var(--light-blue)"
                     borderRadius="8px"
                     text="Cancel"
                     padding="12px 36px"
+                    onClick={onCancel}
                 />
 
-                <Button 
-                    backgroundColor="var(--navy)" 
+                <Button
+                    type="submit"
+                    backgroundColor="var(--navy)"
                     fontSize="12px"
                     color="var(--white)"
                     borderRadius="8px"
@@ -179,6 +157,6 @@ export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps)
                 />
             </LayoutContainer>
 
-        </>
+        </form>
     );
 }

@@ -1,39 +1,39 @@
+import { FieldValues, useController, UseControllerProps } from "react-hook-form";
 import { InputLabel } from "../InputLabel";
 import { DateInputContainer, StyledDateInput } from "./date-input";
 
-interface DateInputProps {
+interface DateInputProps<T extends FieldValues> extends UseControllerProps<T> {
     label: string;
-    value: string;
-    // onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     placeholder?: string;
-    required?: boolean;
     padding?: string;
     width?: string;
     margin?: string;
 }
 
-export function DateInput({
+export function DateInput<T extends FieldValues>({
     label,
-    value,
-    // onChange,
     placeholder = '',
-    required = false,
     padding,
     margin,
     width,
-}: DateInputProps) {
+    control,
+    name,
+    rules,
+}: DateInputProps<T>) {
+    const { field, fieldState } = useController<T>({ control, name, rules });
+
     return (
         <DateInputContainer margin={margin}>
             {label && <InputLabel text={label} />}
             <StyledDateInput
                 type="date"
-                value={value}
-                // onChange={onChange}
                 placeholder={placeholder}
-                required={required}
                 padding={padding}
                 width={width}
+                {...field}
             />
+            
+            {fieldState.invalid && <span>{fieldState.error?.message}</span>}
         </DateInputContainer>
     )
 }
