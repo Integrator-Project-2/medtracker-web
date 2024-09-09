@@ -8,28 +8,43 @@ import { LayoutContainer } from "@/components/LayoutContainer";
 import { SearchPatientModal } from "@/components/SearchPatientModal";
 import { getDoctorPatients } from "@/services/patients-managment/getDoctorPatients";
 import { Patient } from "@/@types/Data/Patient";
+
+import { useRouter } from 'next/navigation';
 import { LoadingSpinner } from "@/components/LoadingSpinner";
+import { PageSkeleton } from "@/components/PageSkeleton";
 
 
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
   const [patients, setPatients] = useState<Patient[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingDetails, setLoadingDetails] = useState(false);
   const doctorId = 34;
+  const router = useRouter();
+
+
+  const fetchPatients = async () => {
+    setLoading(true);
+    try {
+      const patientsData = await getDoctorPatients(doctorId);
+      console.log("pacientes do médico: ", patients);
+      setPatients(patientsData);
+    } catch (error) {
+      console.error('Failed to fetch patients', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePatientDetails = async (patientId: number) => {
+    setLoadingDetails(true);
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    router.push(`/patient-details/${patientId}`); 
+    setLoadingDetails(false); 
+  };
+
 
   useEffect(() => {
-    const fetchPatients = async () => {
-      setLoading(true);
-      try {
-        const patientsData = await getDoctorPatients(doctorId);
-        console.log("pacientes do médico: ", patients);
-        setPatients(patientsData);
-      } catch (error) {
-        console.error('Failed to fetch patients', error);
-      } finally {
-        setLoading(false);
-      }
-    };
 
     fetchPatients();
   }, [doctorId]);
@@ -40,6 +55,7 @@ export default function Home() {
         <SearchPatientModal
           modalOpen={modalOpen}
           setModalOpen={setModalOpen}
+          onPatientAssociated={fetchPatients}
         />
         <Button 
           icon="plus-icon.svg"
@@ -47,15 +63,18 @@ export default function Home() {
           borderRadius="8px"
           text="New patient"
           onClick={() => setModalOpen(!modalOpen)}
+          loading={loading}
         />
         </Title>
         {loading ? (
-        <div style={{ height: "100%" }}>
-          <LoadingSpinner />
-        </div>
-      ) : (
-        <PatientsTable patients={patients} />
-      )}
+          <PageSkeleton />
+        ) : loadingDetails ? ( 
+          <div style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
+            <LoadingSpinner size={50} />
+          </div>
+        ) : (
+          <PatientsTable patients={patients} onPatientDetails={handlePatientDetails} />
+        )}
     </LayoutContainer>
   );
 }

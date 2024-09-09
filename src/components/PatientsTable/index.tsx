@@ -8,9 +8,10 @@ import { Patient } from "@/@types/Data/Patient";
 
 interface PatientsTableProps {
     patients: Patient[];
+    onPatientDetails: (patientId: number) => void;
 }
 
-export function PatientsTable({ patients }: PatientsTableProps) {
+export function PatientsTable({ patients, onPatientDetails }: PatientsTableProps) {    
     return (
         <StyledTable>
             <StyledHeader>
@@ -29,7 +30,7 @@ export function PatientsTable({ patients }: PatientsTableProps) {
                     <StyledRow key={index}>
                         <StyledCell>
                             <Image 
-                                src='user-icon-avatar.svg'
+                                src='/user-icon-avatar.svg'
                                 alt={`Avatar of ${patient.user.name}`}
                                 width={28}
                                 height={28}
@@ -40,7 +41,10 @@ export function PatientsTable({ patients }: PatientsTableProps) {
                         <StyledCell>{patient.gender}</StyledCell>
                         <StyledCell>{patient.user.birth_date}</StyledCell>
                         <StyledCell>
-                            <PatientDetailsButton patientId={patient.id} />
+                            <PatientDetailsButton 
+                                patientId={patient.id!} 
+                                onClick={() => onPatientDetails(patient.id!)}    
+                            />
                         </StyledCell>
                     </StyledRow>
                 ))}

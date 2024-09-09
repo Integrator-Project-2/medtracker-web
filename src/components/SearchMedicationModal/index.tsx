@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { SearchMedicationFormValues } from "@/@types/form-values/SearchMedicationFormValues";
 import { searchMedicationByName } from "@/services/medication-service/searchMedicationByName";
 import { Medication } from "@/@types/Data/Medication";
+import { LoadingSpinner } from "../LoadingSpinner";
 
 interface SearchMedicationModalProps {
     modalOpen: boolean;
@@ -20,6 +21,9 @@ export function SearchMedicationModal({ modalOpen, setModalOpen, addMedicationTo
     const [createMedicationModalOpen, setCreateMedicationModalOpen] = useState(false);
     const [selectedMedication, setSelectedMedication] = useState<Medication | null>(null);
     const [medications, setMedications] = useState<Medication[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [searchAttempted, setSearchAttempted] = useState(false);
+
 
     const { register, handleSubmit, reset, control } = useForm<SearchMedicationFormValues>({
         defaultValues: {
@@ -36,7 +40,9 @@ export function SearchMedicationModal({ modalOpen, setModalOpen, addMedicationTo
     };
 
     const onSubmit = async (data: SearchMedicationFormValues) => {
-        try {            
+        try {        
+            setLoading(true);  
+            setSearchAttempted(true);  
             const medications = await searchMedicationByName(data.medicationName);
     
             setMedications(medications);
@@ -46,6 +52,8 @@ export function SearchMedicationModal({ modalOpen, setModalOpen, addMedicationTo
             console.log("Medications encontrados: ", JSON.stringify(medications));
         } catch (error) {
             console.error('Error searching for medication:', error);
+        } finally {
+            setLoading(false); 
         }
     };
     
@@ -85,6 +93,7 @@ export function SearchMedicationModal({ modalOpen, setModalOpen, addMedicationTo
                             type="submit" 
                             disabled={!selectedMedication}
                             onClick={addMedicationInPrescription}
+                            color="var(--white)"
                         />
                     </Flex>
                 }
@@ -108,21 +117,26 @@ export function SearchMedicationModal({ modalOpen, setModalOpen, addMedicationTo
                             backgroundColor="var(--light-navy)"
                             padding="10px"
                             type="submit"
+                            onClick={handleSubmit(onSubmit)}
                         />
                     </Flex>
                 </form>
 
                 <Flex direction="column">
-                    {medications.length > 0 && (
-                        medications.map((medication, index) => (
-                            <MedicationCard 
-                                key={index} 
-                                medication={medication} 
-                                selectedValue={selectedMedication?.id.toString() || ""}
-                                setSelectedValue={() => setSelectedMedication(medication)}
-                            />
-                        ))
-                    )} 
+                {loading ? ( 
+                    <LoadingSpinner />
+                ) : medications.length > 0 ? (  
+                    medications.map((medication, index) => (
+                        <MedicationCard 
+                            key={index} 
+                            medication={medication} 
+                            selectedValue={selectedMedication?.id.toString() || ""}
+                            setSelectedValue={() => setSelectedMedication(medication)}
+                        />
+                    ))
+                ) : (
+                    searchAttempted && <p>No medication found.</p> 
+                )}
                 </Flex>
             </Modal>
 

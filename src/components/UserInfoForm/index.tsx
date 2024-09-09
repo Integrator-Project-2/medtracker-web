@@ -10,6 +10,7 @@ import { LayoutContainer } from "../LayoutContainer";
 import { useForm } from "react-hook-form";
 import { PatientFormValues } from "@/@types/form-values/PatientFormValues";
 import { updatePatientDetails } from "@/services/users-service/updatePatient";
+import { LoadingSpinner } from "../LoadingSpinner";
 
 interface UserInfoFormProps {
     patient: Patient;
@@ -19,6 +20,8 @@ interface UserInfoFormProps {
 
 
 export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps) {
+    const [loading, setLoading] = useState(false);
+
     const { register, handleSubmit, reset, control } = useForm<PatientFormValues>({
         defaultValues: {
             cpf: patient.cpf || '',
@@ -39,28 +42,32 @@ export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps)
     const onSubmitForm = async (data: Patient) => {
         try {
             if (patient.id) {
-
+                setLoading(true);
                 const updatedData: Partial<Patient> = {
                     cpf: data.cpf,
                     gender: data.gender,
                     height: data.height,
                     weight: data.weight,
                     allergies_and_observations: data.allergies_and_observations,
+                    user: {
+                        name: data.user.name,
+                        phone: data.user.phone,
+                        address: data.user.address,
+                        birth_date: data.user.birth_date,
+                        ...(data.user.email !== patient.user.email && { email: data.user.email }),
+                    }
                 };
-    
-                // Check if the email has changed
-                if (data.user.email !== patient.user.email) {
-                    updatedData.user = {
-                        ...data.user,
-                    };
-                }
 
+                console.log("Dados completos: ", updatedData);
+                                
                 const updatedPatient = await updatePatientDetails(patient.id, updatedData);
                 console.log('Patient updated successfully:', updatedPatient);
                 onSubmit(updatedPatient);   
             }
         } catch (error) {
             console.error(error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -91,6 +98,7 @@ export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps)
                 placeholder="Pacient name"
                 margin="0"
                 control={control}
+                disabled={loading}
             />
 
             <TextInput
@@ -99,6 +107,7 @@ export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps)
                 placeholder="CPF"
                 margin="0"
                 control={control}
+                disabled={loading}
             />
 
             <PatientDetailSectionContainer>
@@ -110,6 +119,7 @@ export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps)
                     placeholder="Email"
                     margin="0"
                     control={control}
+                    disabled={loading}
                 />
 
                 <TextInput
@@ -118,6 +128,7 @@ export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps)
                     placeholder="Phone number"
                     margin="0"
                     control={control}
+                    disabled={loading}
                 />
 
                 <TextInput
@@ -126,6 +137,7 @@ export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps)
                     placeholder="Address"
                     margin="0"
                     control={control}
+                    disabled={loading}
                 />
             </PatientDetailSectionContainer>
 
@@ -144,6 +156,7 @@ export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps)
                         margin="0"
                         width="120px"
                         control={control}
+                        disabled={loading}
                     />
 
                     <TextInput
@@ -153,6 +166,7 @@ export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps)
                         margin="0"
                         width="120px"
                         control={control}
+                        disabled={loading}
                     />
                 </TextInfoContainer>
 
@@ -164,6 +178,7 @@ export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps)
                         margin="0"
                         width="120px"
                         control={control}
+                        disabled={loading}
                     />
 
                     <TextInput
@@ -173,6 +188,7 @@ export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps)
                         margin="0"
                         width="120px"
                         control={control}
+                        disabled={loading}
                     />
                 </TextInfoContainer>
 
@@ -184,6 +200,7 @@ export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps)
                     width="100%"
                     height="83px"
                     control={control}
+                    disabled={loading}
                 />
             </PatientDetailSectionContainer>
 
@@ -212,9 +229,9 @@ export function UserInfoForm({ patient, onSubmit, onCancel }: UserInfoFormProps)
                     borderRadius="8px"
                     text="Done"
                     padding="12px 36px"
+                    loading={loading}
                 />
             </LayoutContainer>
-
         </form>
     );
 }

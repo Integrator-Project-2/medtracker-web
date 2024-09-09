@@ -11,6 +11,7 @@
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
+    "@mui/lab": "^6.0.0-beta.9",
     "@mui/material": "^6.0.2",
     "@nextui-org/spinner": "^2.0.33",
     "@nextui-org/system": "^2.2.5",

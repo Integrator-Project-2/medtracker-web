@@ -4,19 +4,15 @@ import { useRouter } from "next/navigation";
 
 interface PatientDetailsButtonProps {
     patientId: number;
+    onClick: () => void;
 }
 
-export function PatientDetailsButton({ patientId }: PatientDetailsButtonProps) {
-    const router = useRouter();
-
-    const handleClick = () => {
-        router.push(`/patient-details/${patientId}`);
-    };
+export function PatientDetailsButton({ patientId, onClick }: PatientDetailsButtonProps) {
 
     return (
-        <Button onClick={handleClick}>
+        <Button onClick={onClick}>
             <Image 
-                src='fluent-apps-list-icon.svg'
+                src='/fluent-apps-list-icon.svg'
                 alt="Detail icon"
                 width={24}
                 height={24}

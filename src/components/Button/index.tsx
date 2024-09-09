@@ -4,11 +4,13 @@ import { StyledButtonProps } from '@/@types/components/StyledButtonProps';
 import { Button as StyledButton } from './button';
 import Image from 'next/image';
 
+
 interface ButtonProps extends StyledButtonProps {
     icon?: string;
     text?: string;
     onClick?: () => void;
     type?: 'button' | 'submit' | 'reset';
+    loading?: boolean;
 }
 
 export function Button({ 
@@ -23,12 +25,13 @@ export function Button({
     text,
     type = 'button',
     disabled = false, 
-    onClick
-}: ButtonProps){
+    loading = false,
+    onClick,
+}: ButtonProps) {
     return (
         <StyledButton
-            backgroundColor={backgroundColor}
-            color={color}
+            backgroundColor={loading ? 'var(--navy)' : backgroundColor} // Altera a cor de fundo quando em loading
+            color={loading ? 'var(--white)' : color}
             width={width}
             height={height}
             fontSize={fontSize}
@@ -37,10 +40,10 @@ export function Button({
             onClick={onClick}
             type={type}
             disabled={disabled}
+            loading={loading}
         >
-            {icon && <Image src={icon} alt='Ícone' width={14} height={14} />}
-
+            {!loading && icon && <Image src={icon} alt='Ícone' width={14} height={14} />}
             {text}
         </StyledButton>       
-    )
+    );
 }

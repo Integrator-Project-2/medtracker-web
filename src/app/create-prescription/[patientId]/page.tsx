@@ -2,6 +2,7 @@
 
 import { Patient } from "@/@types/Data/Patient";
 import { LayoutContainer } from "@/components/LayoutContainer";
+import { PageSkeleton } from "@/components/PageSkeleton";
 import { PrescriptionForm } from "@/components/PrescriptionForm";
 import { SideBar } from "@/components/SideBar";
 import { Title } from "@/components/Title";
@@ -12,11 +13,12 @@ import { useEffect, useState } from "react";
 export default function CreatePrescription() {
     const { patientId } = useParams();
     const [patient, setPatient] = useState<Patient>({} as Patient);
-    const [isLoading, setIsLoading] = useState(true);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchPatientDetails = async () => {
             if (patientId) {
+                setLoading(true);
                 try {
                     const numericPatientId = Array.isArray(patientId) ? Number(patientId[0]) : Number(patientId);
                     const data = await getPatientDetails(numericPatientId);
@@ -24,7 +26,7 @@ export default function CreatePrescription() {
                 } catch (error) {
                     console.error('Failed to fetch patient details:', error);
                 } finally {
-                    setIsLoading(false); 
+                    setLoading(false);
                 }
             }
         };
@@ -54,16 +56,17 @@ export default function CreatePrescription() {
                     margin="35px 0 27px"
                 />
 
-                {isLoading ? (
-                    <p>Loading patient details...</p> // Mostra uma mensagem de carregamento
+                {loading ? (
+                    <div style={{ width: '50%' }}>
+                        <PageSkeleton />
+                    </div>
                 ) : (
                     <PrescriptionForm patient={patient} />
                 )}
-
             </LayoutContainer>
 
-            <SideBar patient={patient} />
-        </LayoutContainer>
+            <SideBar patient={patient} loading={loading} />
+        </LayoutContainer>  
         </>
     )
 }

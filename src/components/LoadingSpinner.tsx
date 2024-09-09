@@ -1,9 +1,14 @@
 import CircularProgress from '@mui/material/CircularProgress';
 
-export function LoadingSpinner() {
+interface LoadingSpinnerProps {
+    size?: number;
+}
+
+export function LoadingSpinner({ size = 20 }: LoadingSpinnerProps) { // Default size
     return (
-        <CircularProgress sx={{
-            color: 'var(--navy)'
+        <CircularProgress size={size} sx={{
+            color: 'var(--navy)',
+            margin: '0 auto'
         }}/>
-    )
+    );
 }

@@ -4,6 +4,7 @@ import { Card, Text } from "@radix-ui/themes";
 export const CardContainer = styled(Card)`
     margin-top: 24px;
     border-radius: 8px;
+    width: 100%;
     
     &:hover {
         cursor: pointer;

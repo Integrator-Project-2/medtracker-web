@@ -3,37 +3,48 @@ import { PatientDetailSectionContainer, PatientDetailSectionTitle, TextPatientCP
 import { TextInfo } from "../TextInfo";
 import { TextInfoContainer } from "../TextInfo/text-info";
 import { getGenderDescription } from "../../../utils/getGenderDescription";
+import { SideBarSkeleton } from "../SideBarSkeleton";
 
 interface UserInfoProps {
     patient: Patient;
+    loading?: boolean;
 }
 
-export function UserInfo({ patient }: UserInfoProps) {
-    if (!patient) {
-        return <div>Loading...</div>; 
+export function UserInfo({ patient, loading }: UserInfoProps) {
+    if (loading) {
+        return <SideBarSkeleton />
     }
+
+    const safePatient = patient || {
+        user: { name: 'Not specified', email: 'Not specified', phone: 'Not specified', address: 'Not specified', birth_date: 'Not specified' },
+        cpf: 'Not specified',
+        gender: null,
+        height: null,
+        weight: null,
+        allergies_and_observations: 'Not specified'
+    };
 
     return (
         <>
-            <TextPatientName>{patient?.user?.name || 'Loading...'}</TextPatientName>
-            <TextPatientCPF>{patient.cpf}</TextPatientCPF>
+            <TextPatientName>{safePatient?.user?.name || 'Not specified'}</TextPatientName>
+            <TextPatientCPF>{safePatient?.cpf || 'Not specified'}</TextPatientCPF>
 
             <PatientDetailSectionContainer>
                 <PatientDetailSectionTitle>Contact</PatientDetailSectionTitle>
 
                 <TextInfo 
                     label='Email'
-                    description={patient?.user?.email || 'Loading...'}
+                    description={safePatient?.user?.email || 'Not specified'}
                 />
 
                 <TextInfo 
                     label='Phone number'
-                    description={patient?.user?.phone || 'Loading...'}
+                    description={safePatient?.user?.phone || 'Not specified'}
                 />
 
                 <TextInfo 
                     label='Address'
-                    description={patient?.user?.address || 'Loading...'}
+                    description={safePatient?.user?.address || 'Not specified'}
                 />
             </PatientDetailSectionContainer>
 
@@ -46,15 +57,14 @@ export function UserInfo({ patient }: UserInfoProps) {
                 >
                     <TextInfo 
                         label='Date of birth'
-                        description={patient?.user?.birth_date || 'Loading...'}
+                        description={safePatient?.user?.birth_date || 'Not specified'}
                     />
 
                     <TextInfo 
                         label='Gender'
-                        description={getGenderDescription(patient.gender)}
+                        description={getGenderDescription(safePatient.gender)}
                     />
                 </TextInfoContainer>
-
 
                 <TextInfoContainer
                     flexDirection='row'
@@ -62,18 +72,18 @@ export function UserInfo({ patient }: UserInfoProps) {
                 >
                     <TextInfo 
                         label='Height'
-                        description={patient.height !== null ? `${patient.height} m` : 'Not specified'}
+                        description={safePatient?.height !== null ? `${safePatient.height} m` : 'Not specified'}
                     />
 
                     <TextInfo 
                         label='Weight'
-                        description={patient.weight !== null ? `${patient.weight} kg` : 'Not specified'}
+                        description={safePatient?.weight !== null ? `${safePatient.weight} kg` : 'Not specified'}
                     />
                 </TextInfoContainer>
 
                 <TextInfo 
                     label='Allergies and observations'
-                    description={patient.allergies_and_observations !== null ? `${patient.allergies_and_observations}` : 'Not specified'}
+                    description={safePatient?.allergies_and_observations !== null ? `${safePatient.allergies_and_observations}` : 'Not specified'}
                 />
             </PatientDetailSectionContainer>
         </>

@@ -4,6 +4,8 @@ import { MedicalPrescription } from "@/@types/Data/MedicalPrescription";
 import { Patient } from "@/@types/Data/Patient";
 import { Button } from "@/components/Button";
 import { LayoutContainer } from "@/components/LayoutContainer";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
+import { PageSkeleton } from "@/components/PageSkeleton";
 import { PrescriptionsTable } from "@/components/PrescriptionsTable";
 import { SideBar } from "@/components/SideBar";
 import { Title } from "@/components/Title";
@@ -18,10 +20,13 @@ export default function PatientDetails() {
 
     const [prescriptions, setPrescriptions] = useState<MedicalPrescription[]>([]);
     const [patient, setPatient] = useState<Patient>({} as Patient);
+    const [loading, setLoading] = useState(true);
+    const [isNavigating, setIsNavigating] = useState(false);
 
     useEffect(() => {
         const fetchPrescriptions = async () => {
             if (patientId) {
+                setLoading(true);
                 try {
                     // Converte o patientId para número, se ele for uma string
                     const numericPatientId = Array.isArray(patientId) ? Number(patientId[0]) : Number(patientId);
@@ -30,6 +35,8 @@ export default function PatientDetails() {
                     setPrescriptions(data);
                 } catch (error) {
                     console.error('Failed to fetch prescriptions:', error);
+                } finally {
+                    setLoading(false);
                 }
             }
         };
@@ -53,8 +60,11 @@ export default function PatientDetails() {
         fetchPatientDetails();
     }, [patientId]);
 
-    const handleNewPrescription = () => {
-        router.push(`/create-prescription/${patientId}`);
+    const handleNewPrescription = async () => {
+        setIsNavigating(true);
+        setLoading(true);
+        await new Promise((resolve) => setTimeout(resolve, 300)); 
+        router.push(`/create-prescription/${patientId}`); 
     };
 
     return (
@@ -77,13 +87,20 @@ export default function PatientDetails() {
                         text="New prescription"
                         padding="13px 20px"
                         onClick={handleNewPrescription}
+                        loading={loading}
                     />
                 </Title>
 
-                <PrescriptionsTable prescriptions={prescriptions} />
+                {loading ? (
+                    <PageSkeleton />
+                ) : isNavigating ? ( // Show loading spinner if navigating
+                    <LoadingSpinner />
+                ) : (
+                    <PrescriptionsTable prescriptions={prescriptions} />
+                )}
             </LayoutContainer>
 
-            <SideBar patient={patient} />
+            <SideBar patient={patient} loading={loading} />
         </LayoutContainer>
     )
 }

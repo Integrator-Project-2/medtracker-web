@@ -10,12 +10,15 @@ import { getGenderDescription } from '../../../utils/getGenderDescription';
 import { use, useEffect, useState } from 'react';
 import { UserInfo } from '../UserInfo';
 import { UserInfoForm } from '../UserInfoForm';
+import { SideBarSkeleton } from '../SideBarSkeleton';
+
 
 interface SideBarProps {
     patient: Patient
+    loading?: boolean
 }
 
-export function SideBar({ patient }: SideBarProps) {
+export function SideBar({ patient, loading = false }: SideBarProps) {
     const [isEditing, setIsEditing] = useState(false);
     const [currentPatient, setCurrentPatient] = useState(patient);
 
@@ -51,14 +54,16 @@ export function SideBar({ patient }: SideBarProps) {
                 </EditButton>
             </UserProfileContainer>
 
-            {isEditing && currentPatient ?(
+            {loading ? (
+                <SideBarSkeleton />
+            ) : isEditing && currentPatient ? (
                 <UserInfoForm 
                     patient={currentPatient} 
                     onSubmit={handleFormSubmit} 
                     onCancel={handleCancel} 
                 />
             ) : (
-                <UserInfo patient={currentPatient} />
+                <UserInfo patient={currentPatient} loading={loading} />
             )}
 
         </SideBarContainer>

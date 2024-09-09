@@ -5,6 +5,7 @@ import { Button } from "../Button";
 import { useForm } from "react-hook-form";
 import { MedicationFormValues } from "@/@types/form-values/MedicationFormValues";
 import { createMedication } from "@/services/medication-service/createMedication";
+import { useState } from "react";
 
 interface CreateMedicationModalProps {
     modalOpen: boolean;
@@ -12,6 +13,8 @@ interface CreateMedicationModalProps {
 }
 
 export function CreateMedicationModal({ modalOpen, setModalOpen }: CreateMedicationModalProps) {
+    const [loading, setLoading] = useState(false);
+    
     const { register, handleSubmit, reset, control } = useForm<MedicationFormValues>({
         defaultValues: {
             name: '',
@@ -27,6 +30,7 @@ export function CreateMedicationModal({ modalOpen, setModalOpen }: CreateMedicat
         };
 
         try {
+            setLoading(true); 
             const result = await createMedication(medication);
             console.log("New medication created", result);
             reset(); // Reseta os campos após o envio
@@ -34,6 +38,7 @@ export function CreateMedicationModal({ modalOpen, setModalOpen }: CreateMedicat
             console.error("Error creating medication:", error);
         } finally {
             setModalOpen(false);
+            setLoading(false); 
         }
     };
 
@@ -61,6 +66,7 @@ export function CreateMedicationModal({ modalOpen, setModalOpen }: CreateMedicat
                         text="Done"
                         padding="14px 41px"
                         type="submit" 
+                        loading={loading}
                         onClick={handleSubmit(onSubmit)}
                     />
                 </Flex>

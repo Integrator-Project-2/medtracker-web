@@ -1,16 +1,18 @@
+"use client";
+
 import { StyledPrescriptionText } from "@/@types/components/PrescriptionTextProps";
 import { PrescriptionFooterContainer, PrescriptionFormContainer, PrescriptionInfo, PrescriptionInfoContainer, PrescriptionText } from "./prescription-form";
 import { MedicationInfo } from "../MedicationInfo";
 import { Button } from "../Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SearchMedicationModal } from "../SearchMedicationModal";
 import { Medication } from "@/@types/Data/Medication";
-import { TextInput } from "../TextInput";
 import { useForm } from "react-hook-form";
 import { PrescriptionFormValues } from "@/@types/form-values/PrescriptionFormValues";
 import { TextArea } from "../TextArea";
 import { Patient } from "@/@types/Data/Patient";
 import { createPrescription } from "@/services/patients-managment/createPrescription";
+import { useRouter } from 'next/navigation';
 
 interface PrescriptionFormProps extends StyledPrescriptionText {
     patient: Patient;
@@ -20,6 +22,10 @@ export function PrescriptionForm({ patient }: PrescriptionFormProps) {
     const [searchMedicationModalOpen, setSearchMedicationModalOpen] = useState(false);
     const [medicationsInPrescription, setMedicationsInPrescription] = useState<Medication[]>([]);
     const [medicationsInPrescriptionIds, setMedicationsInPrescriptionIds] = useState<number[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [prescriptionCreated, setPrescriptionCreated] = useState(false);
+
+    const router = useRouter();
 
     const { register, handleSubmit, reset, control } = useForm<PrescriptionFormValues>({
         defaultValues: {
@@ -34,19 +40,30 @@ export function PrescriptionForm({ patient }: PrescriptionFormProps) {
     };
 
     const onSubmit = async (formValues: PrescriptionFormValues) => {
+        
         try {
-            const prescriptionData = {
-                medication_ids: medicationsInPrescriptionIds, 
-                description: formValues.description,
-                patient_id: patient.id,
-                doctor_id: 34 
-            };
+            if(patient.id) {
+                const prescriptionData = {
+                    medication_ids: medicationsInPrescriptionIds, 
+                    description: formValues.description,
+                    patient_id: patient.id,
+                    doctor_id: 34 
+                };
+                setLoading(true);
+                await createPrescription(prescriptionData);
+                console.log('Prescription created successfully');
+                setPrescriptionCreated(true);
+                reset();
 
-            await createPrescription(prescriptionData);
-            console.log('Prescription created successfully');
-            reset();
+                // Usa router.push apenas no lado do cliente
+                if (router?.push) {
+                    router.push(`/patient-details/${patient.id}`);
+                }
+            }
         } catch (error) {
             console.error('Error creating prescription:', error);
+        } finally {
+            setLoading(false); 
         }
       };
 
@@ -77,6 +94,7 @@ export function PrescriptionForm({ patient }: PrescriptionFormProps) {
                     text="Add Medication"
                     padding="11px 15px"
                     onClick={() => setSearchMedicationModalOpen(!searchMedicationModalOpen)}
+                    disabled={loading}
                 />
             </PrescriptionText>
 
@@ -98,6 +116,7 @@ export function PrescriptionForm({ patient }: PrescriptionFormProps) {
                     width="100%"
                     control={control}
                     {...register("description")}
+                    disabled={loading}
                 />
             </PrescriptionInfoContainer>
             <PrescriptionFooterContainer>
@@ -108,6 +127,7 @@ export function PrescriptionForm({ patient }: PrescriptionFormProps) {
                     borderRadius="8px"
                     text="Cancel"
                     padding="14px 36px"
+                    disabled={loading}
                 />
 
                 <Button 
@@ -118,6 +138,7 @@ export function PrescriptionForm({ patient }: PrescriptionFormProps) {
                     text="Done"
                     padding="14px 36px"
                     onClick={handleSubmit(onSubmit)}
+                    loading={loading}
                 />
             </PrescriptionFooterContainer>
 
