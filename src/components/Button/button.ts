@@ -1,7 +1,8 @@
 import { StyledButtonProps } from "@/@types/components/StyledButtonProps";
 import styled from "styled-components";
+import { LoadingButton } from '@mui/lab';
 
-export const Button = styled.button<StyledButtonProps>`
+export const Button = styled(LoadingButton)<StyledButtonProps>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -16,6 +17,7 @@ export const Button = styled.button<StyledButtonProps>`
   border: none;
   border-radius: ${({ borderRadius }) => borderRadius || "8px"};
   cursor: pointer;
+  text-transform: capitalize;
   
   &:hover {
       opacity: 0.9;
@@ -24,5 +26,6 @@ export const Button = styled.button<StyledButtonProps>`
   &:disabled {
     cursor: not-allowed;
     opacity: 0.6; 
+    color: var(--white)
   }
 `;
