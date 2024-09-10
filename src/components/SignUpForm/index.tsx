@@ -10,26 +10,76 @@ import { useState } from "react";
 import { DateInput } from "../DateInput";
 import { RegisterDoctorFormValues } from "@/@types/form-values/RegisterDoctorFormValues";
 import { useForm } from "react-hook-form";
+import { registerDoctor } from "@/services/users-service/registerDoctor";
 
 export function SignUpForm() {
     const [step, setStep] = useState(1);
+    const [step1Data, setStep1Data] = useState({
+        user: {
+            name: '',
+            email: '',
+            password: '',
+            phone: '',
+            address: '',
+            birth_date: ''
+        },
+        crm: '',
+    });
 
     const { register, handleSubmit, reset, control } = useForm<RegisterDoctorFormValues>({
         defaultValues: {
+            user: {
+                name: '',
+                email: '',
+                password: '',
+                phone: '',
+                address: '',
+                birth_date: ''
+            },
+            crm: '',
+            specialty: '',
         },
         mode: "onChange"
     });
 
-    const handleNextStep = () => {
+    const handleNextStep = (data: RegisterDoctorFormValues) => {
+        console.log("testando esse divo");
+        reset({
+            user: {
+                name: '',
+                email: '',
+                password: '',
+                phone: '',
+                address: '',
+                birth_date: ''
+            },
+            crm: '',
+            specialty: '',
+        });
+        setStep1Data(data);
         setStep(step + 1);
     };
 
-    const onSubmit = async  (data: RegisterDoctorFormValues) => {
-        console.log("cadastrando doctor: ", data)
+    const onSubmit = async (data: RegisterDoctorFormValues) => {
+        const completeData = {
+            ...step1Data,
+            specialty: data.specialty,
+            user: {
+                ...step1Data.user,
+                birth_date: data.user.birth_date,
+                address: data.user.address,
+                phone: data.user.phone,
+            }
+        };
+        try {
+            const result = await registerDoctor(completeData);
+        } catch (error) {
+            console.error("Error registering doctor:", error);
+        }
     };
 
     return (
-        <SignUpFormContainer onSubmit={handleSubmit(onSubmit)}>
+        <SignUpFormContainer>
             <Title title="Sign Up" color="var(--navy)" margin="0 25px" />
 
             {step === 1 ? (
@@ -73,14 +123,7 @@ export function SignUpForm() {
                         margin="0 0 23px"
                     />
 
-                    <Button 
-                        text="Continue"
-                        width="100%"
-                        color="var(--white)"
-                        backgroundColor="var(--navy)"
-                        padding="16px 140px"
-                        onClick={handleNextStep}
-                    />
+                    
                 </>
             ) : (
                 <>
@@ -116,19 +159,33 @@ export function SignUpForm() {
                         placeholder="(00) 00000-0000"
                         padding="13px"
                         control={control}
-                        name="user.birth_date"
+                        name="user.phone"
                         margin="0 0 23px"
                     />
 
-                    <Button 
-                        text="Sign Up"
-                        width="100%"
-                        color="var(--white)"
-                        backgroundColor="var(--navy)"
-                        padding="16px 140px"
-                        type="submit"
-                    />
+                    
                 </>
+            )}
+
+            {step === 1 ? (
+                <Button 
+                    text="Continue"
+                    width="100%"
+                    color="var(--white)"
+                    backgroundColor="var(--navy)"
+                    padding="16px 140px"
+                    onClick={handleSubmit(handleNextStep)} 
+                    type="button"
+                />
+            ) : (
+                <Button 
+                    text="Sign Up"
+                    width="100%"
+                    color="var(--white)"
+                    backgroundColor="var(--navy)"
+                    padding="16px 140px"
+                    onClick={handleSubmit(onSubmit)}
+                />
             )}
 
             <Text>

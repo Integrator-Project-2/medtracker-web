@@ -7,11 +7,15 @@ const api = axios.create({
   },
 });
 
+const excludeTokenUrls = ['/register-doctor/'];
+
 api.interceptors.request.use(
   (config) => {
-    const token = process.env.NEXT_PUBLIC_ACCESS_TOKEN || localStorage.getItem('token'); 
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    if (config.url && !excludeTokenUrls.includes(config.url)) {
+      const token = process.env.NEXT_PUBLIC_ACCESS_TOKEN || localStorage.getItem('token'); 
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
     }
     return config;
   },
@@ -19,5 +23,6 @@ api.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
 
 export default api;
