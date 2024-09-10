@@ -12,7 +12,8 @@ const excludeTokenUrls = ['/register-doctor/', '/token/'];
 api.interceptors.request.use(
   (config) => {
     if (config.url && !excludeTokenUrls.includes(config.url)) {
-      const token = process.env.NEXT_PUBLIC_ACCESS_TOKEN || localStorage.getItem('token'); 
+      const token = localStorage.getItem('token'); 
+      console.log("console do intercept token: " + token);
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }

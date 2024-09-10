@@ -5,6 +5,7 @@ import "./globals.css";
 import StyledComponentsRegistry from "../../lib/registry";
 import { Theme } from "@radix-ui/themes";
 import { ClientLayout } from "@/components/ClientLayout";
+import { DoctorProvider } from "@/context/DoctorContext";
 
 
 const poppins = Poppins({ 
@@ -29,7 +30,9 @@ export default function RootLayout({
         <Theme>
           <StyledComponentsRegistry>
             <ClientLayout>
-              {children}
+              <DoctorProvider>
+                {children}
+              </DoctorProvider>
             </ClientLayout>
           </StyledComponentsRegistry>
         </Theme>

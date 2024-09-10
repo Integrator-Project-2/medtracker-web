@@ -12,6 +12,7 @@ import { Patient } from "@/@types/Data/Patient";
 import { useRouter } from 'next/navigation';
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { PageSkeleton } from "@/components/PageSkeleton";
+import { useDoctor } from "@/context/DoctorContext";
 
 
 export default function Home() {
@@ -19,14 +20,21 @@ export default function Home() {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingDetails, setLoadingDetails] = useState(false);
-  const doctorId = 34;
+  const { doctor } = useDoctor();
   const router = useRouter();
 
 
   const fetchPatients = async () => {
+    if (!doctor || !doctor.id) {
+      console.error("Doctor is not available.");
+      setLoading(false); 
+      return;
+    }
+
+
     setLoading(true);
     try {
-      const patientsData = await getDoctorPatients(doctorId);
+      const patientsData = await getDoctorPatients(doctor.id!);
       console.log("pacientes do médico: ", patients);
       setPatients(patientsData);
     } catch (error) {
@@ -45,9 +53,10 @@ export default function Home() {
 
 
   useEffect(() => {
-
-    fetchPatients();
-  }, [doctorId]);
+    if (doctor?.user.id) { 
+      fetchPatients();
+    }
+  }, [doctor]);
 
   return (
     <LayoutContainer>

@@ -9,6 +9,8 @@ import { Text } from "./login-form"
 import { useForm } from "react-hook-form";
 import { AuthDoctorFormValues } from "@/@types/form-values/AuthDoctorFormValues";
 import { authenticateDoctor } from "@/services/users-service/authDoctor";
+import { fetchDoctorInfo } from "@/services/users-service/fetchDoctorInfo";
+import { useDoctor } from "@/context/DoctorContext";
 
 interface LoginFormProps {
     onAuthenticated: () => void;
@@ -23,14 +25,22 @@ export function LoginForm({ onAuthenticated }: LoginFormProps) {
         mode: "onChange"
     });
 
+    const { setDoctor } = useDoctor();
+
     const onSubmit = async (data: AuthDoctorFormValues) => {
         console.log('Attempting to authenticate: ', data);
         try {
             const result = await authenticateDoctor(data.email, data.password);
-            console.log('Authentication successful:', result);
             
-            localStorage.setItem('token', result.token); 
-            
+            localStorage.setItem('token', result.access); 
+            localStorage.setItem('userId', result.user_id); 
+
+            console.log("token da request: ", result.access);
+
+            const doctorData = await fetchDoctorInfo(result.user_id);
+
+            setDoctor(doctorData);
+
             onAuthenticated(); 
         } catch (error) {
             console.error("Error during authentication:", error);
