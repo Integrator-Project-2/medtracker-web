@@ -1,10 +1,11 @@
 import { styled } from "styled-components";
 import { Text as RadixText } from "@radix-ui/themes";
 
-export const SignUpFormContainer = styled.div`
+export const SignUpFormContainer = styled.form`
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 20px;
     width: 100%;
     max-width: 341px;
 `;
