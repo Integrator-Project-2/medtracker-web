@@ -7,6 +7,7 @@ export const LoginFormContainer = styled.div`
     align-items: center;
     width: 100%;
     max-width: 341px;
+    gap: 20px;
 `;
 
 export const InputContainer = styled.div`

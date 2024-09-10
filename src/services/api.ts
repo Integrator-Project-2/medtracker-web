@@ -7,7 +7,7 @@ const api = axios.create({
   },
 });
 
-const excludeTokenUrls = ['/register-doctor/'];
+const excludeTokenUrls = ['/register-doctor/', '/token/'];
 
 api.interceptors.request.use(
   (config) => {

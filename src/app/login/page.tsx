@@ -1,8 +1,13 @@
+"use client";
+
 import { LayoutContainer } from "@/components/LayoutContainer";
 import { LoginForm } from "@/components/LoginForm";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
+    const router = useRouter();
+
     return (
         <LayoutContainer flexDirection="row" maxWidth="None">
             <LayoutContainer
@@ -32,7 +37,7 @@ export default function Login() {
                 backgroundColor="var(--white)"
                 justifyContent="center"
             >
-                <LoginForm />
+                 <LoginForm onAuthenticated={() => router.push('/')} />
             </LayoutContainer>
         </LayoutContainer>
     )
