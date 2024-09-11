@@ -81,7 +81,8 @@ export function SearchMedicationModal({ modalOpen, setModalOpen, addMedicationTo
                     <Flex gap="3" mt="4" justify="end">
                         <Button 
                             text="Cancel"
-                            padding="14px 41px"
+                            padding="12px 32px"
+                            fontSize="10px"
                             backgroundColor="var(--light-navy)"
                             color="var(--navy)"
                             onClick={() => setModalOpen(false)} 
@@ -89,7 +90,8 @@ export function SearchMedicationModal({ modalOpen, setModalOpen, addMedicationTo
     
                         <Button 
                             text="Done"
-                            padding="14px 41px"
+                            padding="12px 32px"
+                            fontSize="10px"
                             type="submit" 
                             disabled={!selectedMedication}
                             onClick={addMedicationInPrescription}
