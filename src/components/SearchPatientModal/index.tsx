@@ -10,6 +10,8 @@ import { associateDoctorPatient } from "@/services/patients-managment/associateD
 import { useForm } from "react-hook-form";
 import { SearchPatientFormValues } from "@/@types/form-values/SearchPatientFormValues";
 import { LoadingSpinner } from "../LoadingSpinner";
+import { SnackbarNotification } from "../SnackbarNotification";
+import { useDoctor } from "@/context/DoctorContext";
 
 interface SearchPatientModalProps {
     modalOpen: boolean;
@@ -23,6 +25,13 @@ export function SearchPatientModal({ modalOpen, setModalOpen, onPatientAssociate
     const [searchAttempted, setSearchAttempted] = useState(false);
     const [loading, setLoading] = useState(false);
     const [buttonLoading, setButtonLoading] = useState(false);
+    const [showUserCard, setShowUserCard] = useState(false);
+
+    const [notification, setNotification] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({
+        open: false,
+        message: '',
+        severity: 'success',
+    });
 
     const { register, handleSubmit, reset, control, watch } = useForm<SearchPatientFormValues>({
         defaultValues: {
@@ -38,8 +47,10 @@ export function SearchPatientModal({ modalOpen, setModalOpen, onPatientAssociate
             try {
                 const data = await searchByCpf({ cpf });
                 setPatientData(data);
+                setShowUserCard(true);
             } catch (err) {
                 setPatientData({} as Patient);
+                setShowUserCard(false);
             } finally {
                 setLoading(false); 
             }
@@ -48,22 +59,27 @@ export function SearchPatientModal({ modalOpen, setModalOpen, onPatientAssociate
 
     const cpf = watch("cpf");
 
+    const { doctor } = useDoctor();
+
     const onSubmit = async () => {
-        if (selectedValue) {
+        if (selectedValue && doctor?.id) {
             const payload = {
-                doctor_id: 34, // ID do médico fixo
+                doctor_id: doctor?.id, // ID do médico fixo
                 patient_id: Number(selectedValue),
             };
 
             setButtonLoading(true);
             try {
                 const response = await associateDoctorPatient(payload);
-                console.log('Associação realizada:', response);
+                
+                setNotification({ open: true, message: 'Patient associated successfully!', severity: 'success' });
 
                 reset();
                 onPatientAssociated();
+                setModalOpen(false);
             } catch (error) {
                 console.error('Erro ao associar médico e paciente:', error);
+                setNotification({ open: true, message: 'Failed to associate patient. Please try again.', severity: 'error' });
             } finally {
                 setModalOpen(false);
                 setButtonLoading(false); 
@@ -83,19 +99,21 @@ export function SearchPatientModal({ modalOpen, setModalOpen, onPatientAssociate
                 <Flex gap="3" mt="4" justify="end">
                     <Button 
                         text="Cancel"
-                        padding="14px 41px"
+                        padding="12px 32px"
                         backgroundColor="var(--light-navy)"
                         color="var(--navy)"
                         onClick={() => setModalOpen(false)} 
+                        fontSize="10px"
                     />
 
                     <Button 
                         text="Done"
-                        padding="14px 41px"
+                        padding="12px 32px"
                         type="submit" 
                         disabled={selectedValue === ""}
                         onClick={onSubmit}
                         loading={buttonLoading}
+                        fontSize="10px"
                     />
                 </Flex>
             }
@@ -122,7 +140,7 @@ export function SearchPatientModal({ modalOpen, setModalOpen, onPatientAssociate
             <Flex direction="column" align="center" justify="center" style={{ height: '100%', width: "100%" }}>
                 {loading ? ( 
                     <LoadingSpinner />
-                ) : patientData && patientData.id ? (  
+                ) : showUserCard && patientData && patientData.id ? (  
                     <UserCard 
                         patient={patientData} 
                         selectedValue={selectedValue.toString()}
@@ -132,6 +150,13 @@ export function SearchPatientModal({ modalOpen, setModalOpen, onPatientAssociate
                     searchAttempted && <p>No patient found.</p> 
                 )}
             </Flex>
+
+            <SnackbarNotification
+                open={notification.open}
+                onClose={() => setNotification({ ...notification, open: false })}
+                message={notification.message}
+                severity={notification.severity}
+            />
         </Modal>
     );
 }
