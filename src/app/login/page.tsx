@@ -37,7 +37,7 @@ export default function Login() {
                 backgroundColor="var(--white)"
                 justifyContent="center"
             >
-                 <LoginForm onAuthenticated={() => router.push('/')} />
+                <LoginForm onAuthenticated={() => router.push('/')} />
             </LayoutContainer>
         </LayoutContainer>
     )
