@@ -12,6 +12,7 @@ interface TextInputProps<T extends FieldValues> extends UseControllerProps<T>  {
     height?: string;
     borderRadius?: string;
     color?: string;
+    type?: string;  
 }
 
 export function TextInput<T extends FieldValues>({ 
@@ -25,6 +26,7 @@ export function TextInput<T extends FieldValues>({
     control,
     name,
     rules,
+    type = 'text',
 }: TextInputProps<T>) {
     const { field, fieldState } = useController<T>({ control, name, rules });
 
@@ -37,6 +39,7 @@ export function TextInput<T extends FieldValues>({
                 width={width}
                 height={height}
                 color={color}
+                type={type}
                 {...field}
             />  
             {fieldState.invalid && <span>{fieldState.error?.message}</span>}
