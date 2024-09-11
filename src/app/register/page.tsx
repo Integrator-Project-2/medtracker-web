@@ -1,5 +1,4 @@
 import { LayoutContainer } from "@/components/LayoutContainer";
-import { LoginForm } from "@/components/LoginForm";
 import { SignUpForm } from "@/components/SignUpForm";
 import Image from "next/image";
 
