@@ -29,11 +29,11 @@ export default function RootLayout({
       <body className={poppins.className}>
         <Theme>
           <StyledComponentsRegistry>
-            <ClientLayout>
-              <DoctorProvider>
+            <DoctorProvider>
+              <ClientLayout>
                 {children}
-              </DoctorProvider>
-            </ClientLayout>
+              </ClientLayout>
+            </DoctorProvider>
           </StyledComponentsRegistry>
         </Theme>
       </body>
