@@ -13,6 +13,7 @@ import { TextArea } from "../TextArea";
 import { Patient } from "@/@types/Data/Patient";
 import { createPrescription } from "@/services/patients-managment/createPrescription";
 import { useRouter } from 'next/navigation';
+import { SnackbarNotification } from "../SnackbarNotification";
 
 interface PrescriptionFormProps extends StyledPrescriptionText {
     patient: Patient;
@@ -24,6 +25,11 @@ export function PrescriptionForm({ patient }: PrescriptionFormProps) {
     const [medicationsInPrescriptionIds, setMedicationsInPrescriptionIds] = useState<number[]>([]);
     const [loading, setLoading] = useState(false);
     const [prescriptionCreated, setPrescriptionCreated] = useState(false);
+    const [notification, setNotification] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({
+        open: false,
+        message: '',
+        severity: 'success',
+    });
 
     const router = useRouter();
 
@@ -51,17 +57,20 @@ export function PrescriptionForm({ patient }: PrescriptionFormProps) {
                 };
                 setLoading(true);
                 await createPrescription(prescriptionData);
-                console.log('Prescription created successfully');
+                setNotification({ open: true, message: 'Prescription created successfully!', severity: 'success' });
                 setPrescriptionCreated(true);
                 reset();
 
-                // Usa router.push apenas no lado do cliente
-                if (router?.push) {
+                setTimeout(() => {
+                    setNotification((prev) => ({ ...prev, open: false }));
                     router.push(`/patient-details/${patient.id}`);
-                }
+                }, 2000);
             }
         } catch (error) {
             console.error('Error creating prescription:', error);
+            setTimeout(() => {
+                setNotification((prev) => ({ ...prev, open: false }));
+            }, 2000);
         } finally {
             setLoading(false); 
         }
@@ -146,6 +155,13 @@ export function PrescriptionForm({ patient }: PrescriptionFormProps) {
                 modalOpen={searchMedicationModalOpen}
                 setModalOpen={setSearchMedicationModalOpen}
                 addMedicationToPrescription={addMedicationToPrescription}
+            />
+
+            <SnackbarNotification
+                open={notification.open}
+                onClose={() => setNotification({ ...notification, open: false })}
+                message={notification.message}
+                severity={notification.severity}
             />
         </PrescriptionFormContainer> 
     )

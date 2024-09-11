@@ -4,8 +4,11 @@ import Image from 'next/image';
 import { Header as StyledHeader } from './header'
 import { ProfileInfo } from '../ProfileInfo';
 import Link from 'next/link';
+import { useDoctor } from '@/context/DoctorContext';
 
 export function Header() {
+    const { doctor } = useDoctor();
+
     return( 
         <StyledHeader>
             <Link href="/">
@@ -17,7 +20,7 @@ export function Header() {
                 />
             </Link>
 
-            <ProfileInfo name='Michael Scott' specialization='Dermatologist' />
+            <ProfileInfo name={doctor?.user.name || "Doctor"} specialization={doctor?.specialty || 'Especialista'} />
         </StyledHeader>
     )
 }

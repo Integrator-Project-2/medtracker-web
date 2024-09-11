@@ -7,7 +7,7 @@ export const StyledDialogContent = styled(Dialog.Content)`
   background-color: var(--white); 
   border-radius: 8px; 
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  `;
+`;
 
 export const TitleHeaderContainer = styled.div`
   width: 100%;

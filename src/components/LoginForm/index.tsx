@@ -11,12 +11,21 @@ import { AuthDoctorFormValues } from "@/@types/form-values/AuthDoctorFormValues"
 import { authenticateDoctor } from "@/services/users-service/authDoctor";
 import { fetchDoctorInfo } from "@/services/users-service/fetchDoctorInfo";
 import { useDoctor } from "@/context/DoctorContext";
+import { useState } from "react";
+import { SnackbarNotification } from "../SnackbarNotification";
 
 interface LoginFormProps {
     onAuthenticated: () => void;
 }
 
 export function LoginForm({ onAuthenticated }: LoginFormProps) {
+    const [loading, setLoading] = useState(false);
+    const [notification, setNotification] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({
+        open: false,
+        message: '',
+        severity: 'success',
+    });
+
     const { register, handleSubmit, reset, control } = useForm<AuthDoctorFormValues>({
         defaultValues: {
                 email: '',
@@ -28,22 +37,25 @@ export function LoginForm({ onAuthenticated }: LoginFormProps) {
     const { setDoctor } = useDoctor();
 
     const onSubmit = async (data: AuthDoctorFormValues) => {
-        console.log('Attempting to authenticate: ', data);
         try {
+            setLoading(true);
             const result = await authenticateDoctor(data.email, data.password);
             
             localStorage.setItem('token', result.access); 
             localStorage.setItem('userId', result.user_id); 
 
-            console.log("token da request: ", result.access);
-
             const doctorData = await fetchDoctorInfo(result.user_id);
 
             setDoctor(doctorData);
 
+            setNotification({ open: true, message: 'Authenticated successfully!', severity: 'success' });
+
             onAuthenticated(); 
         } catch (error) {
             console.error("Error during authentication:", error);
+            setNotification({ open: true, message: 'Error during authentication. Please check your credentials.', severity: 'error' });
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -68,6 +80,7 @@ export function LoginForm({ onAuthenticated }: LoginFormProps) {
                 control={control}
                 name="password"
                 margin="0 0 23px"
+                type="password"
             /> 
 
             <Button 
@@ -77,6 +90,7 @@ export function LoginForm({ onAuthenticated }: LoginFormProps) {
                 backgroundColor="var(--navy)"
                 padding="16px 140px"
                 onClick={handleSubmit(onSubmit)}
+                loading={loading}
             />
 
             <Text>
@@ -85,6 +99,13 @@ export function LoginForm({ onAuthenticated }: LoginFormProps) {
                     Sign Up
                 </Link>
             </Text>
+
+            <SnackbarNotification
+                open={notification.open}
+                onClose={() => setNotification({ ...notification, open: false })}
+                message={notification.message}
+                severity={notification.severity}
+            />
         </LoginFormContainer>
     )
 }

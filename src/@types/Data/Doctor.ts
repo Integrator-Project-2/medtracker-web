@@ -1,7 +1,7 @@
 import { User } from "./User";
 
 export interface Doctor {
-    id: number;
+    id?: number;
     user: User;
     crm: string;
     specialty: string;
