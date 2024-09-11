@@ -11,9 +11,22 @@ import { DateInput } from "../DateInput";
 import { RegisterDoctorFormValues } from "@/@types/form-values/RegisterDoctorFormValues";
 import { useForm } from "react-hook-form";
 import { registerDoctor } from "@/services/users-service/registerDoctor";
+import { AlertColor } from "@mui/material";
+import { useRouter } from 'next/navigation';
+import { SnackbarNotification } from "../SnackbarNotification";
 
 export function SignUpForm() {
     const [step, setStep] = useState(1);
+    const [loading, setLoading] = useState(false);
+
+    const router = useRouter();
+
+    const [notification, setNotification] = useState<{ open: boolean; message: string; severity: AlertColor }>({
+        open: false,
+        message: '',
+        severity: 'success',
+    });
+
     const [step1Data, setStep1Data] = useState({
         user: {
             name: '',
@@ -72,11 +85,23 @@ export function SignUpForm() {
             }
         };
         try {
+            setLoading(true);
             const result = await registerDoctor(completeData);
+            setNotification({ open: true, message: 'Doctor registered successfully!', severity: 'success' });
+
+            router.push('/login'); 
         } catch (error) {
             console.error("Error registering doctor:", error);
+            setNotification({ open: true, message: 'Error registering doctor. Please try again.', severity: 'error' });
+        } finally {
+            setLoading(false);
         }
     };
+
+    const handleCloseNotification = () => {
+        setNotification({ ...notification, open: false });
+    };
+
 
     return (
         <SignUpFormContainer>
@@ -120,6 +145,7 @@ export function SignUpForm() {
                         rules={{ required: "Password is required" }}
                         control={control}
                         name="user.password"
+                        type="password"
                         margin="0 0 23px"
                     />
 
@@ -185,6 +211,7 @@ export function SignUpForm() {
                     backgroundColor="var(--navy)"
                     padding="16px 140px"
                     onClick={handleSubmit(onSubmit)}
+                    loading={loading}
                 />
             )}
 
@@ -194,6 +221,13 @@ export function SignUpForm() {
                     Sign In
                 </Link>
             </Text>
+
+            <SnackbarNotification
+                open={notification.open}
+                onClose={() => setNotification({ ...notification, open: false })}
+                message={notification.message}
+                severity={notification.severity}
+            />
         </SignUpFormContainer>
     )
 }
