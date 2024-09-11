@@ -13,42 +13,53 @@ interface PatientsTableProps {
 
 export function PatientsTable({ patients, onPatientDetails }: PatientsTableProps) {    
     return (
-        <StyledTable>
-            <StyledHeader>
-                <StyledRow>
-                    <StyledColumnHeaderCell></StyledColumnHeaderCell>
-                    <StyledColumnHeaderCell>Name</StyledColumnHeaderCell>
-                    <StyledColumnHeaderCell>CPF</StyledColumnHeaderCell>
-                    <StyledColumnHeaderCell>Gender</StyledColumnHeaderCell>
-                    <StyledColumnHeaderCell>Birth date</StyledColumnHeaderCell>
-                    <StyledColumnHeaderCell>Detail</StyledColumnHeaderCell>
+        <>
+            {patients.length === 0 ? (
+                <StyledRow align="center">
+                    <StyledCell colSpan={5} style={{ alignItems: 'center' }}>
+                        No patients found.
+                    </StyledCell>
                 </StyledRow>
-            </StyledHeader>
+            ) : (
+                <StyledTable>
+                    <StyledHeader>
+                        <StyledRow>
+                            <StyledColumnHeaderCell></StyledColumnHeaderCell>
+                            <StyledColumnHeaderCell>Name</StyledColumnHeaderCell>
+                            <StyledColumnHeaderCell>CPF</StyledColumnHeaderCell>
+                            <StyledColumnHeaderCell>Gender</StyledColumnHeaderCell>
+                            <StyledColumnHeaderCell>Birth date</StyledColumnHeaderCell>
+                            <StyledColumnHeaderCell>Detail</StyledColumnHeaderCell>
+                        </StyledRow>
+                    </StyledHeader>
 
-            <Table.Body>
-                {patients.map((patient, index) => (
-                    <StyledRow key={index}>
-                        <StyledCell>
-                            <Image 
-                                src='/user-icon-avatar.svg'
-                                alt={`Avatar of ${patient.user.name}`}
-                                width={28}
-                                height={28}
-                            />
-                        </StyledCell>
-                        <Table.RowHeaderCell>{patient.user.name}</Table.RowHeaderCell>
-                        <StyledCell>{patient.cpf}</StyledCell>
-                        <StyledCell>{patient.gender}</StyledCell>
-                        <StyledCell>{patient.user.birth_date}</StyledCell>
-                        <StyledCell>
-                            <PatientDetailsButton 
-                                patientId={patient.id!} 
-                                onClick={() => onPatientDetails(patient.id!)}    
-                            />
-                        </StyledCell>
-                    </StyledRow>
-                ))}
-            </Table.Body>
-        </StyledTable>
+                    <Table.Body>
+                        {patients.map((patient, index) => (
+                            <StyledRow key={index}>
+                                <StyledCell>
+                                    <Image 
+                                        src='/user-icon-avatar.svg'
+                                        alt={`Avatar of ${patient.user.name}`}
+                                        width={28}
+                                        height={28}
+                                    />
+                                </StyledCell>
+                                <Table.RowHeaderCell>{patient.user.name}</Table.RowHeaderCell>
+                                <StyledCell>{patient.cpf}</StyledCell>
+                                <StyledCell>{patient.gender}</StyledCell>
+                                <StyledCell>{patient.user.birth_date}</StyledCell>
+                                <StyledCell>
+                                    <PatientDetailsButton 
+                                        patientId={patient.id!} 
+                                        onClick={() => onPatientDetails(patient.id!)}    
+                                    />
+                                </StyledCell>
+                            </StyledRow>
+                        ))}
+                    </Table.Body>
+                </StyledTable>
+            )}
+        </>
+
     );    
 }
